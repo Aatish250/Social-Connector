@@ -17,9 +17,9 @@
     <div class="grid grid-cols-12 gap-6">
         
         <aside class="col-span-12 lg:col-span-3">
-            <div class="bg-white rounded-[1rem] p-6 custom-shadow sticky top-8">
+            <div class="bg-white rounded-md p-6 custom-shadow sticky top-8">
                 <div class="flex items-center space-x-3 mb-10 px-2">
-                    <div class="bg-blue-600 p-2 rounded-xl text-white">
+                    <div class="bg-blue-600 p-2 rounded-3xl text-white">
                         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/></svg>
                     </div>
                     <div>
@@ -29,38 +29,38 @@
                 </div>
 
                 <nav class="space-y-1 mb-10">
-                    <a href="#" class="flex items-center space-x-4 bg-blue-50 text-blue-600 px-4 py-3 rounded-2xl font-semibold">
+                    <a href="#" class="flex items-center space-x-4 bg-blue-50 text-blue-600 px-4 py-3 rounded-md font-semibold">
                         <span>🏠</span> <span>Home</span>
                     </a>
-                    <a href="#" class="flex items-center space-x-4 text-gray-500 hover:bg-gray-50 px-4 py-3 rounded-2xl transition">
+                    <a href="../discovery" class="flex items-center space-x-4 text-gray-500 hover:bg-gray-50 px-4 py-3 rounded-md transition">
                         <span>🧭</span> <span>Discovery</span>
                     </a>
-                    <a href="#" class="flex items-center space-x-4 text-gray-500 hover:bg-gray-50 px-4 py-3 rounded-2xl transition">
+                    <a href="../communities" class="flex items-center space-x-4 text-gray-500 hover:bg-gray-50 px-4 py-3 rounded-md transition">
+                        <span>👥</span> <span>Communities</span>
+                    </a>
+                    <a href="../message" class="flex items-center space-x-4 text-gray-500 hover:bg-gray-50 px-4 py-3 rounded-md transition">
                         <span>💬</span> <span>Messages</span>
                     </a>
-                    <a href="#" class="flex items-center space-x-4 text-gray-500 hover:bg-gray-50 px-4 py-3 rounded-2xl transition">
-                        <span>🔔</span> <span>Notifications</span>
-                    </a>
-                    <a href="#" class="flex items-center space-x-4 text-gray-500 hover:bg-gray-50 px-4 py-3 rounded-2xl transition">
+                    <a href="../profile" class="flex items-center space-x-4 text-gray-500 hover:bg-gray-50 px-4 py-3 rounded-md transition">
                         <span>👤</span> <span>Profile</span>
                     </a>
                 </nav>
 
-                <button class="w-full bg-[#1A4BFF] hover:bg-blue-700 text-white py-4 rounded-[1.5rem] font-bold shadow-lg shadow-blue-200 transition mb-6">
+                <button class="w-full bg-[#1A4BFF] hover:bg-blue-700 text-white py-4 rounded-md font-bold shadow-lg shadow-blue-200 transition mb-6">
                     + New Post
                 </button>
 
-                <a href="#" class="flex items-center space-x-4 text-gray-500 hover:bg-gray-50 px-4 py-3 rounded-2xl transition mt-4 border-t pt-6">
+                <a href="#" class="flex items-center space-x-4 text-gray-500 hover:bg-gray-50 px-4 py-3 rounded-md transition mt-4 border-t pt-6">
                     <span>⚙️</span> <span>Settings</span>
                 </a>
             </div>
         </aside>
 
         <main class="col-span-12 lg:col-span-6 space-y-6">
-            <div class="bg-white rounded-[1rem] p-6 custom-shadow">
+            <div class="bg-white rounded-md p-6 custom-shadow">
                 <div class="flex items-center space-x-4 mb-4">
                     <div class="w-12 aspect-square bg-[#E6D5C3] rounded-full overflow-hidden flex items-center justify-center">
-                        <img src="https://picsum.photos/200" alt="" class="object-cover w-full h-full">
+                        <img src="https://i.pravatar.cc/150?u=Aatish" alt="" class="object-cover w-full h-full">
                     </div>
                     <input type="text" placeholder="What's on your mind?" class="bg-transparent text-gray-400 text-lg outline-none w-full">
                 </div>
@@ -76,12 +76,12 @@
 
             <?php 
                 $posts = [
-                    ['name' => 'Alex Rivers', 'profile' => 'https://picsum.photos/202', 'time' => '2 hours ago', 'content' => 'Just finished the new design system for Social Connector. Tailwind-inspired and looking sharp! #UI #Design #WebDev', 'image' => true, 'content_image' => 'https://picsum.photos/400/200'],
-                    ['name' => 'Jordan Smith', 'profile' => 'https://picsum.photos/204', 'time' => '5 hours ago', 'content' => 'Exploring the benefits of minimalist web design in modern SaaS applications. Less is definitely more when it comes to user cognitive load.', 'image' => false, 'content_image' => '']
+                    ['name' => 'Alex Rivers', 'profile' => 'https://i.pravatar.cc/150?u=Alex Rivers', 'time' => '2 hours ago', 'content' => 'Just finished the new design system for Social Connector. Tailwind-inspired and looking sharp! #UI #Design #WebDev', 'image' => true, 'content_image' => 'https://picsum.photos/400/200'],
+                    ['name' => 'Jordan Smith', 'profile' => 'https://i.pravatar.cc/150?u=Jordan Smith', 'time' => '5 hours ago', 'content' => 'Exploring the benefits of minimalist web design in modern SaaS applications. Less is definitely more when it comes to user cognitive load.', 'image' => false, 'content_image' => '']
                 ];
                 foreach($posts as $post): 
             ?>
-            <article class="bg-white rounded-[1rem] overflow-hidden custom-shadow">
+            <article class="bg-white rounded-md overflow-hidden custom-shadow">
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center space-x-3">
@@ -122,14 +122,14 @@
                 <input type="text" placeholder="Search Connector" class="bg-transparent outline-none text-sm w-full">
             </div>
 
-            <div class="bg-white rounded-[1rem] p-6 custom-shadow">
+            <div class="bg-white rounded-md p-6 custom-shadow">
                 <h3 class="font-bold text-gray-800 mb-6">People You May Know</h3>
                 <div class="space-y-6">
                     <?php 
                     $people = [
-                        ['name' => 'Liam Vance', 'mutual' => 12, 'profile' => 'https://picsum.photos/210'],
-                        ['name' => 'Sarah Chen', 'mutual' => 8, 'profile' => 'https://picsum.photos/211'],
-                        ['name' => 'David Miller', 'mutual' => 20, 'profile' => 'https://picsum.photos/212']
+                        ['name' => 'Liam Vance', 'mutual' => 12, 'profile' => 'https://i.pravatar.cc/150?u=Liam Vance'],
+                        ['name' => 'Sarah Chen', 'mutual' => 8, 'profile' => 'https://i.pravatar.cc/150?u=Sara Chen'],
+                        ['name' => 'David Miller', 'mutual' => 20, 'profile' => 'https://i.pravatar.cc/150?u=David Miller']
                     ]; 
                     foreach($people as $person): ?>
                     <div class="flex items-center justify-between">
@@ -149,7 +149,7 @@
                 <button class="w-full text-center text-blue-600 font-bold text-xs mt-8">Show More</button>
             </div>
 
-            <div class="bg-white rounded-[1rem] p-6 custom-shadow">
+            <div class="bg-white rounded-md p-6 custom-shadow">
                 <h3 class="font-bold text-gray-800 mb-6">Trending</h3>
                 <div class="space-y-4">
                     <?php
