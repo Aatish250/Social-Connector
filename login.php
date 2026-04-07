@@ -56,34 +56,13 @@ include 'includes/header.php';
                 Login
             </button>
         </form>
-        <!-- Social Login Divider -->
-        <div class="relative my-8">
-            <div aria-hidden="true" class="absolute inset-0 flex items-center">
-                <div class="w-full border-t border-outline-variant/10"></div>
-            </div>
-            <div class="relative flex justify-center text-xs uppercase tracking-widest">
-                <span class="bg-[#181825] px-4 text-on-surface-variant">Or continue with</span>
-            </div>
-        </div>
-        <!-- Social Login Actions -->
-        <div class="grid grid-cols-2 gap-4">
-            <button class="flex items-center justify-center gap-2 px-4 py-2.5 bg-surface-container-high border border-outline-variant/10 rounded-lg hover:bg-surface-variant transition-colors duration-300">
-                <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">google</span>
-                <span class="text-sm font-medium">Google</span>
-            </button>
-            <button class="flex items-center justify-center gap-2 px-4 py-2.5 bg-surface-container-high border border-outline-variant/10 rounded-lg hover:bg-surface-variant transition-colors duration-300">
-                <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">ios</span>
-                <span class="text-sm font-medium">Apple</span>
-            </button>
-        </div>
+        <p class="mt-8 text-center text-on-surface-variant text-sm">
+            Don't have an account? 
+            <a class="font-semibold text-primary hover:underline underline-offset-4 decoration-2 decoration-primary/30 transition-all duration-200 ml-1" href="signup.php">
+                Sign up
+            </a>
+        </p>
     </div>
-    <!-- Footer Link -->
-    <p class="mt-8 text-center text-on-surface-variant text-sm">
-        Don't have an account? 
-        <a class="font-semibold text-primary hover:underline underline-offset-4 decoration-2 decoration-primary/30 transition-all duration-200 ml-1" href="signup.php">
-            Sign up
-        </a>
-    </p>
     <!-- Aesthetic Background Element (Subtle Glow) -->
     <div class="fixed top-0 right-0 -z-10 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full pointer-events-none"></div>
     <div class="fixed bottom-0 left-0 -z-10 w-[400px] h-[400px] bg-tertiary/5 blur-[100px] rounded-full pointer-events-none"></div>
