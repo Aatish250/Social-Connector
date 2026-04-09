@@ -3,6 +3,8 @@ require_once "config/db.php";
 require_once "config/auth.php";
 isLoggedIn();
 
+$user = getUserDetail($conn, $_SESSION['uid']);
+
 $pageTitle = 'Profile | Social Connector';
 $currentPage = 'profile';
 include 'includes/header.php';
@@ -10,30 +12,47 @@ include 'includes/sidebar.php';
 ?>
 
 <main class="ml-20 lg:ml-64 flex-grow p-12 min-h-screen bg-surface">
-    <?php if (isset($_SESSION['uid'])) {
-        echo "logged";
-    } else {
-        echo "not logged";
-    } ?>
     <!-- Profile Header Section -->
     <section class="mb-16 max-w-6xl mx-auto">
         <div class="flex items-end justify-between gap-8 mb-12">
             <div class="flex items-center gap-8">
                 <div
                     class="min-h-28 min-w-28 max-w-32 max-h-32 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10">
-                    <img alt="Profile Large" class="w-full h-full object-cover"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAxcTv_vCOHUeoArEiFeag5S-jX9G-BV-7iFE-m-_L9033xPWbdZ3CWLh-Zs3pYLWTXhTFKw8i7KdBsrB9Yc5InapsAhQQQIUC8cNZjUuCJGowb243lN1Ppn2hkhviRepRvjQEF8QE3WK-afFeplbrxJ32JlUNfCJ1Rwdzm6qKsyVQ2SLW-TjfWRqvDY9JkQgqR1BtJViHRsoWWExl20Sh8ir4EtQqPEeVyPm2gv4jK7V4UFs24jI7DIQ4BnJy9aeM3zPwZOHL3g" />
+                    <img alt="Profile Large" class="w-full h-full object-cover" src="<?= $user['profile_pic'] ?>" />
                 </div>
                 <div>
                     <h1 class="font-headline text-5xl font-extrabold tracking-tighter text-on-surface mb-3 flex gap-5">
-                        Julian Voss
+                        <?php echo $user['fullname']; ?>
                         <a href="edit-profile.php"
                             class="material-symbols-outlined hover:text-primary transition-color duration-300 hover:scale-105">
                             edit_square
                         </a>
                     </h1>
-                    <p class="text-on-surface-variant font-medium text-lg max-w-xl leading-relaxed">Curating digital
-                        spaces for modern intellectuals and high-end design enthusiasts. Based in Berlin.</p>
+                    <p class="text-on-surface-variant font-medium text-lg max-w-xl leading-relaxed">
+                        <?php echo $user['bio']; ?>
+                    </p>
+                    <div class="flex items-center gap-3 justify-between pt-5 border-t border-outline-variant/10">
+                        <div class="flex items-center text-xs font-semibold text-on-surface-variant">
+                            <span
+                                class="material-symbols-outlined text-[30px] <?= $user['gender'] == 'female' ? 'text-pink-500' : 'text-amber-500' ?>"><?= $user['gender'] ?></span>
+                        </div>
+                        <div class="flex items-center text-xs font-semibold text-on-surface-variant">
+                            <span class="material-symbols-outlined text-md">calendar_month</span>
+                            <span><?= $user['dob'] ?></span>
+                        </div>
+                        <div class="flex items-center text-xs font-semibold text-on-surface-variant">
+                            <span class="material-symbols-outlined text-md">location_on</span>
+                            <span>
+                                <?= htmlspecialchars($user['location']) ?>
+                            </span>
+                        </div>
+                        <div class="flex items-center text-xs font-semibold text-on-surface-variant">
+                            <span class="material-symbols-outlined text-md">phone</span>
+                            <span>
+                                <?= htmlspecialchars($user['contact']) ?>
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

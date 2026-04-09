@@ -16,10 +16,10 @@ $email = $_POST['email'];
 $password = $_POST['password'];
 
 //connect to database
-require_once(__DIR__."/../config/db.php");
+require_once(__DIR__ . "/../config/db.php");
 
 // Prepare and bind to prevent SQL injection
-$query = "SELECT id, password FROM users WHERE email = ?";
+$query = "SELECT uid, password FROM users WHERE email = ?";
 $stmt = mysqli_prepare($conn, $query);
 if ($stmt) {
     mysqli_stmt_bind_param($stmt, "s", $email);
@@ -28,7 +28,7 @@ if ($stmt) {
 
     if ($result && mysqli_num_rows($result) == 1) {
         $row = mysqli_fetch_assoc($result);
-        $db_id = $row['id'];
+        $db_uid = $row['uid'];
         $db_hashed_password = $row['password'];
 
         if (password_verify($password, $db_hashed_password)) {
@@ -37,8 +37,8 @@ if ($stmt) {
                 "message" => "Logging in...",
                 "timmer" => 4
             ];
-            // Store user id in session
-            $_SESSION['id'] = $db_id;
+            // Store user uid in session
+            $_SESSION['uid'] = $db_uid;
         } else {
             $response = [
                 "status" => 0,

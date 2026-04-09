@@ -20,7 +20,7 @@ require_once(__DIR__ . '/../config/db.php');
 
 // Check if email already exists (using mysqli procedural format)
 $email_check = mysqli_real_escape_string($conn, $_POST["email"]);
-$query = "SELECT id FROM users WHERE email = '$email_check'";
+$query = "SELECT uid FROM users WHERE email = '$email_check'";
 $result = mysqli_query($conn, $query);
 
 if ($result && mysqli_num_rows($result) > 0) {
