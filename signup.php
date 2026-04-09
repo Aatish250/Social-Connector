@@ -19,8 +19,8 @@ include 'includes/header.php';
     </div>
     <!-- Form Card -->
     <div class="bg-surface-container-low p-10 rounded-xl editorial-shadow ghost-border backdrop-blur-xl">
-        <form class="lg:grid lg:grid-cols-3 gap-4" method="POST" action="php/signup_process.php"
-            enctype="multipart/form-data">
+        <form class="lg:grid lg:grid-cols-3 gap-4"
+            enctype="multipart/form-data" id="dataForm">
 
             <!-- Profile Picture Field (placeholder and preview) -->
             <div class="space-y-2 lg:row-span-3">
@@ -251,14 +251,58 @@ include 'includes/header.php';
             </p>
         </div>
     </div>
-    <!-- Decorative Subtle Background Element -->
-    <div class="fixed top-0 right-0 -z-10 opacity-20">
-        <div class="w-[800px] h-[800px] rounded-full blur-[150px] bg-primary/10 translate-x-1/2 -translate-y-1/2"></div>
-    </div>
-    <div class="fixed bottom-0 left-0 -z-10 opacity-10">
-        <div class="w-[600px] h-[600px] rounded-full blur-[120px] bg-tertiary/10 -translate-x-1/2 translate-y-1/2">
-        </div>
-    </div>
 </main>
 
 <?php include 'includes/footer.php'; ?>
+
+<script src="js/verify_and_user_login.js"></script>
+<script type="text/javascript">
+    const myForm = document.getElementById('dataForm');
+    myForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        
+        const formData = new FormData(myForm);
+        const submitBtn = myForm.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Submitting...";
+        submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+        fetch('php/signup_process.php', {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(!data.status){
+                showToast(data.message, data.status, data.timmer);
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Create Account";
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            } else {
+                showToast(data.message, data.status, data.timmer);
+                setTimeout(() => {
+                    submitBtn.innerText = "Redirecting...";
+                    // window.location.href = "login.php";
+                    log_user_in(data.email, data.password);
+                    myForm.reset();
+                    showToast(data.message, data.status, data.timmer);
+                }, 3000);
+            }
+        })
+        .catch(error => {
+            console.error("AJAX Error:", error);
+            showToast("Server Error. Please try again.", 0, 7);
+            resetButton(); // Reset button so user isn't stuck
+        });
+
+        function resetButton() {
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Create Account";
+            submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+    });
+
+    
+    // showToast("TEst");
+</script>
+<?php //showToast("TEst", 0)?>

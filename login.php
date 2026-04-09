@@ -21,7 +21,7 @@ include 'includes/header.php';
     </div>
     <!-- Login Form Container -->
     <div class="glass-card ambient-glow rounded-xl p-8 border border-outline-variant/10">
-        <form action="communities.php" class="space-y-6" method="POST">
+        <form class="space-y-6" id="dataForm">
             <!-- Email Input Group -->
             <div class="space-y-2">
                 <label class="font-label text-xs font-semibold uppercase tracking-widest text-on-secondary-container" for="email">
@@ -69,3 +69,19 @@ include 'includes/header.php';
 </main>
 
 <?php include 'includes/footer.php'; ?>
+
+<script src="js/verify_and_user_login.js"></script>
+<script>
+    const myForm = document.getElementById('dataForm');
+
+    myForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const email = myForm.querySelector('input[type="email"]').value;
+        const password = myForm.querySelector('input[name="password"]').value;
+
+        log_user_in(email, password);
+        
+        // console.log(email, password);
+    });
+</script>

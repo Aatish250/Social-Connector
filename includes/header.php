@@ -98,3 +98,5 @@
     </style>
 </head>
 <body class="bg-surface <?php echo isset($bodyClass) ? $bodyClass : ''; ?>">
+    
+<?php include 'includes/showToast.php'; ?>
