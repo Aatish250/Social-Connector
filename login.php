@@ -25,7 +25,6 @@ include 'includes/header.php';
             <!-- Email Input Group -->
             <div class="space-y-2">
                 <label class="font-label text-xs font-semibold uppercase tracking-widest text-on-secondary-container" for="email">
-                    Email Address
                 </label>
                 <div class="relative group">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-on-surface-variant group-focus-within:text-primary transition-colors duration-300">
