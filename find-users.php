@@ -15,7 +15,7 @@ include 'includes/sidebar.php';
     <!-- Central Content Area -->
     <div class="flex-1 bg-surface-container-low min-h-screen p-6 md:p-12">
         <!-- Search Header Section -->
-        <section class="max-w-4xl mx-auto mb-16">
+        <section class="max-w-5xl mx-auto mb-5">
             <h1 class="text-4xl font-headline font-extrabold text-on-surface mb-8 tracking-tight">Find Users</h1>
             <form class="relative group" id="searchForm">
                 <div class="absolute inset-y-0 left-5 flex items-center pointer-events-none">
@@ -35,56 +35,8 @@ include 'includes/sidebar.php';
             </form>
 
             <!-- Searched Values -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-10 mt-5"
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-5 mt-5"
                 id="searchedUser">
-                <!-- Suggestion 1 -->
-                <!-- <div
-                    class="flex flex-col items-center text-center p-8 bg-surface-container-high rounded-2xl border border-transparent hover:border-outline-variant/20 transition-all group">
-                    <div class="relative mb-4">
-                        <img alt="Liam Carter"
-                            class="w-24 h-24 rounded-full object-cover p-1 border-2 border-primary/20 group-hover:border-primary transition-all"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGspwDWBdWLVMTYZsa1yji1XGc7DedPj1hv6nXAGnlaCJVn2RT7Kxq0KWtP8I1UB5adTLC_Jh9xPypXiPR7tWLeRMbrag0egrnXgCv1zS3BTD926PYmy4cdVO5YvuzMjLZDdcibMOZ2gJlZ-2bzYDbptGjyGvNXrr73C04fRUM6VgrSv-3OMGGqz7-I9JiJ3XnkG19tPOvP3fFfi6MjBi0I5rT7ch87tKfy5SKS482yHJD1q7zOxEiYouxtm9FuLtLKLqAADWHSA" />
-                    </div>
-                    <h3 class="font-headline font-bold text-lg text-on-surface mb-6">Liam Carter</h3>
-                    <button
-                        class="w-full bg-surface-variant text-on-surface py-3 rounded-lg text-xs font-bold hover:bg-primary hover:text-on-primary-container transition-all">Connect</button>
-                </div> -->
-                <!-- Suggestion 2 -->
-                <!-- <div
-                    class="flex flex-col items-center text-center p-8 bg-surface-container-high rounded-2xl border border-transparent hover:border-outline-variant/20 transition-all group">
-                    <div class="relative mb-4">
-                        <img alt="Sasha Grey"
-                            class="w-24 h-24 rounded-full object-cover p-1 border-2 border-primary/20 group-hover:border-primary transition-all"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaQNydH4U7PwdjQibfWlG3Az38bWclW9plbpgc_GjS3DaHRl0if4LWmhFIMAmfdacRARqfr_QO-iazNs-pJ-eM4XIXL7o3HPHvBLlDsu9RiI8ntt559Bi8iS66B3BO_UHjUte7_NS-Q-XzHdPNTfj6vqY-UgOOIkzrOmIuV5tNlakPQUyviOJmw3hFUGmVq2HnG-2WF9axfn-9j3cAfrs1V13rsn2WFnvFXRM4-U4PG8CPi5H-S0ZUX1RdYgb7SS4SbT8Kx7Sp3g" />
-                    </div>
-                    <h3 class="font-headline font-bold text-lg text-on-surface mb-6">Sasha Grey</h3>
-                    <button
-                        class="w-full bg-surface-variant text-on-surface py-3 rounded-lg text-xs font-bold hover:bg-primary hover:text-on-primary-container transition-all">Connect</button>
-                </div> -->
-                <!-- Suggestion 3 -->
-                <!-- <div
-                    class="flex flex-col items-center text-center p-8 bg-surface-container-high rounded-2xl border border-transparent hover:border-outline-variant/20 transition-all group">
-                    <div class="relative mb-4">
-                        <img alt="David Kim"
-                            class="w-24 h-24 rounded-full object-cover p-1 border-2 border-primary/20 group-hover:border-primary transition-all"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOeI0v6j32_wizM3uzcttJqDq_DMuC_3UMWz6VFHW2unkTYrLrNRmG6d_B8w-P9p11R6oYtCRU6TT6cnSJTOJvpi9GJ_JfTN5qE8ZQyiwfo1FaSgSCTKLCETv0MXcsV6HP6P8nOo1gz8CH_etGMyd-DV49iW0JeD_NkelPte-tJTSUGc-2NB_nz2NLjL3UEyXE7pRb0TKsCiDtX9Z7zYKioVcbgdHSw_ZnqoX39dyXhmwDAhOMly36tSVhTD42nZS--zlH_ZWZxA" />
-                    </div>
-                    <h3 class="font-headline font-bold text-lg text-on-surface mb-6">David Kim</h3>
-                    <button
-                        class="w-full bg-surface-variant text-on-surface py-3 rounded-lg text-xs font-bold hover:bg-primary hover:text-on-primary-container transition-all">Connect</button>
-                </div> -->
-                <!-- Suggestion 3 -->
-                <!-- <div
-                    class="flex flex-col items-center text-center p-8 bg-surface-container-high rounded-2xl border border-transparent hover:border-outline-variant/20 transition-all group">
-                    <div class="relative mb-4">
-                        <img alt="David Kim"
-                            class="w-24 h-24 rounded-full object-cover p-1 border-2 border-primary/20 group-hover:border-primary transition-all"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOeI0v6j32_wizM3uzcttJqDq_DMuC_3UMWz6VFHW2unkTYrLrNRmG6d_B8w-P9p11R6oYtCRU6TT6cnSJTOJvpi9GJ_JfTN5qE8ZQyiwfo1FaSgSCTKLCETv0MXcsV6HP6P8nOo1gz8CH_etGMyd-DV49iW0JeD_NkelPte-tJTSUGc-2NB_nz2NLjL3UEyXE7pRb0TKsCiDtX9Z7zYKioVcbgdHSw_ZnqoX39dyXhmwDAhOMly36tSVhTD42nZS--zlH_ZWZxA" />
-                    </div>
-                    <h3 class="font-headline font-bold text-lg text-on-surface mb-6">David Kim</h3>
-                    <button
-                        class="w-full bg-surface-variant text-on-surface py-3 rounded-lg text-xs font-bold hover:bg-primary hover:text-on-primary-container transition-all">Connect</button>
-                </div> -->
             </div>
             <div class="flex justify-center flex-col md:flex-row gap-4">
                 <button id="showLessUserFindButton"
@@ -101,8 +53,22 @@ include 'includes/sidebar.php';
                 </button>
             </div>
             <script>
-                // Assume there is an input/element with ID "userFindLimit" that stores the current value.
-                // We'll increment/decrement this value on button clicks.
+                // Helper function to update buttons visibility depending on search input content
+                function updateShowMoreLessButtons() {
+                    const input = document.querySelector('#searchForm input[name="searchInput"]');
+                    const showMore = document.getElementById('showMoreUserFindButton');
+                    const showLess = document.getElementById('showLessUserFindButton');
+                    if (!input.value || input.value.trim() === '') {
+                        showMore.classList.add('hidden');
+                        showLess.classList.add('hidden');
+                    } else {
+                        showMore.classList.remove('hidden');
+                        // ShowLess may be hidden if under 4, so we use toggleShowLess to control that
+                        toggleShowLess();
+                    }
+                }
+
+                // Increment/Decrement logic
                 document.getElementById("showLessUserFindButton").addEventListener("click", function () {
                     let userFindLimitEl = document.getElementById("userFindLimit");
                     if (!userFindLimitEl) return;
@@ -132,7 +98,13 @@ include 'includes/sidebar.php';
                 function toggleShowLess() {
                     const userFindLimitEl = document.getElementById("userFindLimit");
                     const showLessUserFindButton = document.getElementById("showLessUserFindButton");
+                    const input = document.querySelector('#searchForm input[name="searchInput"]');
                     if (!userFindLimitEl || !showLessUserFindButton) return;
+                    // Only show if input is not empty!
+                    if (!input.value || input.value.trim() === '') {
+                        showLessUserFindButton.classList.add('hidden');
+                        return;
+                    }
                     let userFindLimit = parseInt(userFindLimitEl.value || userFindLimitEl.textContent || 4, 10);
                     if (userFindLimit <= 4) {
                         showLessUserFindButton.classList.add('hidden');
@@ -141,12 +113,15 @@ include 'includes/sidebar.php';
                     }
                 }
 
-                // Run at start
-                toggleShowLess();
+                // Set up input event to toggle buttons based on input
+                document.querySelector('#searchForm input[name="searchInput"]').addEventListener('input', updateShowMoreLessButtons);
+
+                // Initial run
+                updateShowMoreLessButtons();
             </script>
         </section>
         <!-- Results Sections -->
-        <div class="max-w-4xl mx-auto space-y-20">
+        <div class="max-w-5xl mx-auto space-y-20">
             <!-- Pending Requests -->
             <section>
                 <div class="flex items-center justify-between mb-8">
@@ -301,8 +276,12 @@ include 'includes/sidebar.php';
         // console.log(input);
         if (!input || input == "") {
             document.getElementById("searchedUser").innerHTML = "";
+            document.getElementById("showLessUserFindButton").classList.add("hidden");
+            document.getElementById("showMoreUserFindButton").classList.add("hidden");
             return false;
-
+        } else {
+            document.getElementById("showLessUserFindButton").classList.add("display-block");
+            document.getElementById("showMoreUserFindButton").classList.add("display-block");
         }
         formData = new FormData(searchForm);
         fetch("php/search_user_process.php", {
