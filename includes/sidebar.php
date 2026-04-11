@@ -57,8 +57,6 @@ $currentPage = isset($currentPage) ? $currentPage : '';
                 <span class="material-symbols-outlined text-2xl lg:text-base">person_add</span>
                 <span class="hidden lg:inline ml-0 lg:ml-1">Find Users</span>
             </a>
-            
-            <?php print_r($_SESSION); ?>
         </nav>
     </div>
 

@@ -14,3 +14,14 @@ CREATE TABLE IF NOT EXISTS users (
     bio TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS friendships (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    friend_id INT NOT NULL,
+    status ENUM('pending', 'accepted', 'declined', 'blocked') DEFAULT 'pending',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES users(uid),
+    FOREIGN KEY (friend_id) REFERENCES users(uid)
+);
