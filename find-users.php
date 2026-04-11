@@ -176,8 +176,8 @@ include 'includes/sidebar.php';
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-10">
                     <!-- Suggestion 1 -->
-                    <div
-                        class="flex flex-col items-center text-center p-8 bg-surface-container-high rounded-2xl border border-transparent hover:border-outline-variant/20 transition-all group">
+                    <form data-uid="0"
+                        class="userCard flex flex-col items-center text-center p-8 bg-surface-container-high rounded-2xl border border-transparent hover:border-outline-variant/20 transition-all group">
                         <div class="relative mb-4">
                             <img alt="Liam Carter"
                                 class="w-24 h-24 rounded-full object-cover p-1 border-2 border-primary/20 group-hover:border-primary transition-all"
@@ -186,43 +186,7 @@ include 'includes/sidebar.php';
                         <h3 class="font-headline font-bold text-lg text-on-surface mb-6">Liam Carter</h3>
                         <button
                             class="w-full bg-surface-variant text-on-surface py-3 rounded-lg text-xs font-bold hover:bg-primary hover:text-on-primary-container transition-all">Connect</button>
-                    </div>
-                    <!-- Suggestion 2 -->
-                    <div
-                        class="flex flex-col items-center text-center p-8 bg-surface-container-high rounded-2xl border border-transparent hover:border-outline-variant/20 transition-all group">
-                        <div class="relative mb-4">
-                            <img alt="Sasha Grey"
-                                class="w-24 h-24 rounded-full object-cover p-1 border-2 border-primary/20 group-hover:border-primary transition-all"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaQNydH4U7PwdjQibfWlG3Az38bWclW9plbpgc_GjS3DaHRl0if4LWmhFIMAmfdacRARqfr_QO-iazNs-pJ-eM4XIXL7o3HPHvBLlDsu9RiI8ntt559Bi8iS66B3BO_UHjUte7_NS-Q-XzHdPNTfj6vqY-UgOOIkzrOmIuV5tNlakPQUyviOJmw3hFUGmVq2HnG-2WF9axfn-9j3cAfrs1V13rsn2WFnvFXRM4-U4PG8CPi5H-S0ZUX1RdYgb7SS4SbT8Kx7Sp3g" />
-                        </div>
-                        <h3 class="font-headline font-bold text-lg text-on-surface mb-6">Sasha Grey</h3>
-                        <button
-                            class="w-full bg-surface-variant text-on-surface py-3 rounded-lg text-xs font-bold hover:bg-primary hover:text-on-primary-container transition-all">Connect</button>
-                    </div>
-                    <!-- Suggestion 3 -->
-                    <div
-                        class="flex flex-col items-center text-center p-8 bg-surface-container-high rounded-2xl border border-transparent hover:border-outline-variant/20 transition-all group">
-                        <div class="relative mb-4">
-                            <img alt="David Kim"
-                                class="w-24 h-24 rounded-full object-cover p-1 border-2 border-primary/20 group-hover:border-primary transition-all"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOeI0v6j32_wizM3uzcttJqDq_DMuC_3UMWz6VFHW2unkTYrLrNRmG6d_B8w-P9p11R6oYtCRU6TT6cnSJTOJvpi9GJ_JfTN5qE8ZQyiwfo1FaSgSCTKLCETv0MXcsV6HP6P8nOo1gz8CH_etGMyd-DV49iW0JeD_NkelPte-tJTSUGc-2NB_nz2NLjL3UEyXE7pRb0TKsCiDtX9Z7zYKioVcbgdHSw_ZnqoX39dyXhmwDAhOMly36tSVhTD42nZS--zlH_ZWZxA" />
-                        </div>
-                        <h3 class="font-headline font-bold text-lg text-on-surface mb-6">David Kim</h3>
-                        <button
-                            class="w-full bg-surface-variant text-on-surface py-3 rounded-lg text-xs font-bold hover:bg-primary hover:text-on-primary-container transition-all">Connect</button>
-                    </div>
-                    <!-- Suggestion 3 -->
-                    <div
-                        class="flex flex-col items-center text-center p-8 bg-surface-container-high rounded-2xl border border-transparent hover:border-outline-variant/20 transition-all group">
-                        <div class="relative mb-4">
-                            <img alt="David Kim"
-                                class="w-24 h-24 rounded-full object-cover p-1 border-2 border-primary/20 group-hover:border-primary transition-all"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOeI0v6j32_wizM3uzcttJqDq_DMuC_3UMWz6VFHW2unkTYrLrNRmG6d_B8w-P9p11R6oYtCRU6TT6cnSJTOJvpi9GJ_JfTN5qE8ZQyiwfo1FaSgSCTKLCETv0MXcsV6HP6P8nOo1gz8CH_etGMyd-DV49iW0JeD_NkelPte-tJTSUGc-2NB_nz2NLjL3UEyXE7pRb0TKsCiDtX9Z7zYKioVcbgdHSw_ZnqoX39dyXhmwDAhOMly36tSVhTD42nZS--zlH_ZWZxA" />
-                        </div>
-                        <h3 class="font-headline font-bold text-lg text-on-surface mb-6">David Kim</h3>
-                        <button
-                            class="w-full bg-surface-variant text-on-surface py-3 rounded-lg text-xs font-bold hover:bg-primary hover:text-on-primary-container transition-all">Connect</button>
-                    </div>
+                    </form>
                 </div>
                 <div class="flex justify-center">
                     <button
@@ -261,7 +225,7 @@ include 'includes/sidebar.php';
 
 <?php include 'includes/footer.php'; ?>
 
-<script>
+<script> // Search user functions
     // on sharch input execute query to find user
     let searchForm = document.getElementById("searchForm");
     searchForm.addEventListener("input", () => { fetchUser(); });
@@ -291,6 +255,41 @@ include 'includes/sidebar.php';
             .then(response => response.text())
             .then(data => {
                 document.getElementById("searchedUser").innerHTML = data;
+                userConnectButton(document.querySelectorAll('.searchUserCard'));
             })
     }
+</script>
+
+
+<script>//on connect button click
+
+    userConnectButton(document.querySelectorAll(".userCard"));
+
+    function userConnectButton(userCards) {
+        userCards.forEach(card => {
+            card.querySelector("button").addEventListener("click", (e) => {
+                e.preventDefault();
+                const uid = card.dataset.uid;
+                console.log("Clicked " + uid);
+
+                formData = new FormData();
+                formData.append('reciver_uid', uid);
+                fetch("php/send_user_connection.php", {
+                    method: "POST",
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        showToast(data.message, data.status);
+                        fetchUser();
+                    });
+            })
+        });
+    }
+
+    function send_user_connection() {
+
+    }
+
+
 </script>
