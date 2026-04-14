@@ -39,16 +39,16 @@ function getUserDetail($conn, $uid)
 
 }
 
-function getUsersFriends($conn, $uid, $status = "('accepted')")
+function getFriendList($conn, $uid, $status = "('accepted')")
 {
     $query = "SELECT * FROM users
                 WHERE uid != $uid
                 AND uid IN (
-                    SELECT friend_uid FROM friendships WHERE uid = $uid AND status IN $status
+                    SELECT sender_uid FROM friendships WHERE sender_uid = $uid AND status IN $status
                     -- Get IDs where User 1 is the sender and status is (pending. accepted)
                     UNION
                     -- Get IDs where User 1 is the receiver and status is (pending. accepted)
-                    SELECT uid FROM friendships WHERE friend_uid = $uid AND status IN $status
+                    SELECT sender_uid FROM friendships WHERE sender_uid = $uid AND status IN $status
                 )";
     $result = mysqli_query($conn, $query);
 

@@ -15,7 +15,7 @@ include 'includes/sidebar.php';
     <!-- Central Content Area -->
     <div class="flex-1 bg-surface-container-low min-h-screen p-6 md:p-12">
         <!-- Search Header Section -->
-        <section class="max-w-5xl mx-auto mb-5">
+        <section class="max-w-5xl mx-auto">
             <h1 class="text-4xl font-headline font-extrabold text-on-surface mb-8 tracking-tight">Find Users</h1>
             <form class="relative group" id="searchForm">
                 <div class="absolute inset-y-0 left-5 flex items-center pointer-events-none">
@@ -35,7 +35,7 @@ include 'includes/sidebar.php';
             </form>
 
             <!-- Searched Values -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-5 mt-5"
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-0 mt-5"
                 id="searchedUser">
             </div>
             <div class="flex justify-center flex-col md:flex-row gap-4">
@@ -121,52 +121,10 @@ include 'includes/sidebar.php';
             </script>
         </section>
         <!-- Results Sections -->
-        <div class="max-w-5xl mx-auto space-y-20">
+        <div class="max-w-5xl mx-auto space-y-5">
             <!-- Pending Requests -->
-            <section>
-                <div class="flex items-center justify-between mb-8">
-                    <h2 class="text-xs uppercase tracking-[0.2em] font-bold text-on-surface-variant">Pending Requests
-                    </h2>
-                    <span class="text-xs text-primary font-bold">2 Notifications</span>
-                </div>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Request Card 1 -->
-                    <div
-                        class="bg-surface-container-high p-6 rounded-xl flex items-center justify-between group hover:bg-surface-variant transition-all duration-300">
-                        <div class="flex items-center gap-4">
-                            <img alt="Elena Vance"
-                                class="w-14 h-14 rounded-lg object-cover grayscale group-hover:grayscale-0 transition-all"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDG8T0LBnQw6VrcTBtPEV3COXLtJ2o4gZXCiIw_kHCNw_TbBJNKd-w9cHq35b51f6TRRcKU3X4nAO5YG5bwwxBJDZAZQVaQkUR6TrB8_VhcZ2gYQGbIliKMaFcRCPD9LqknIkLra047vKwegGirTb7IOtiJdPlfqXETigJqP-1SmWYmJMhI70qSpdqKq5wz8XU7A6l0UdGcTHsQK2im68dORQCqcuaeZ2hrMh-RiPGfKJ6CK106ofJEr9KYBcKcrF6nfxVQvym6IQ" />
-                            <div>
-                                <h3 class="font-headline font-bold text-on-surface">Elena Vance</h3>
-                            </div>
-                        </div>
-                        <div class="flex gap-2">
-                            <button
-                                class="bg-primary-container text-on-primary-container px-4 py-2 rounded-lg text-xs font-bold hover:scale-[1.02] active:scale-95 transition-all">Accept</button>
-                            <button
-                                class="bg-surface-container-highest text-on-surface px-4 py-2 rounded-lg text-xs font-bold border border-outline-variant hover:bg-error-container/20 hover:border-error-dim transition-all">Decline</button>
-                        </div>
-                    </div>
-                    <!-- Request Card 2 -->
-                    <div
-                        class="bg-surface-container-high p-6 rounded-xl flex items-center justify-between group hover:bg-surface-variant transition-all duration-300">
-                        <div class="flex items-center gap-4">
-                            <img alt="Marcus Thorne"
-                                class="w-14 h-14 rounded-lg object-cover grayscale group-hover:grayscale-0 transition-all"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyWsxRzH2Dk43cMpLkCzHoaSexfHXc6eHwYKfs78tlh2sjD9m77FnninJWRRfROMX1Iiq6NvcRyjg5YesNN51NAgpsKXMiuiEGh_c2JXPm2sXQFjdZFiyu4-wnBJRKbTz-miimyUQXcwiWW0JOc4ewsHWKuLMgOup9Ko5yzA9fDh_IFiukTPriBe7341UH1BPs4JaIOCejZ6DCo9Y5MXEu6x4K-oGfnos9XHMnSmm2oT7lS6JJ4SyM4Xn4OAb0YE9Mo9SE-DARpg" />
-                            <div>
-                                <h3 class="font-headline font-bold text-on-surface">Marcus Thorne</h3>
-                            </div>
-                        </div>
-                        <div class="flex gap-2">
-                            <button
-                                class="bg-primary-container text-on-primary-container px-4 py-2 rounded-lg text-xs font-bold hover:scale-[1.02] active:scale-95 transition-all">Accept</button>
-                            <button
-                                class="bg-surface-container-highest text-on-surface px-4 py-2 rounded-lg text-xs font-bold border border-outline-variant hover:bg-error-container/20 hover:border-error-dim transition-all">Decline</button>
-                        </div>
-                    </div>
-                </div>
+            <section id="requestSection">
+                <!-- contents to be fetch from show_request.php -->
             </section>
             <!-- People You May Know -->
             <section>
@@ -261,7 +219,7 @@ include 'includes/sidebar.php';
 </script>
 
 
-<script>//on connect button click
+<script> // on connect button click
 
     userConnectButton(document.querySelectorAll(".userCard"));
 
@@ -291,5 +249,62 @@ include 'includes/sidebar.php';
 
     }
 
+</script>
 
+<script> // load the request lists
+    const requestSection = document.getElementById("requestSection");
+    function loadRequests() {
+        // const dataForm = new FormData();
+        fetch("php/show_request.php").then(responce => responce.text())
+            .then(data => {
+                requestSection.innerHTML = data;
+                requestActionButton();
+            });
+    }
+    loadRequests();
+
+    function requestActionButton() {
+        userRequestCards = document.querySelectorAll(".userRequestCard");
+        userRequestCards.forEach(card => {
+            const senderUid = card.dataset.senderUid;
+
+            const acceptBtn = card.querySelector(".acceptBtn");
+            if (acceptBtn) {
+                const newAcceptBtn = acceptBtn.cloneNode(true);
+                acceptBtn.parentNode.replaceChild(newAcceptBtn, acceptBtn);
+                newAcceptBtn.addEventListener("click", e => {
+                    e.preventDefault();
+                    console.log("accept uid:" + senderUid);
+
+                    fetch(`php/show_request.php?action=accept&sender_uid=${senderUid}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            showToast(data.message, data.status, data.timmer);
+                            loadRequests();
+                        })
+                        .catch(error => showToast(error, 0));
+                    // loadRequests();
+                })
+            }
+
+            const declineBtn = card.querySelector(".declineBtn");
+            if (declineBtn) {
+                const newDeclineBtn = declineBtn.cloneNode(true);
+                declineBtn.parentNode.replaceChild(newDeclineBtn, declineBtn);
+                newDeclineBtn.addEventListener("click", e => {
+                    e.preventDefault();
+                    console.log("accept uid:" + senderUid);
+
+                    fetch(`php/show_request.php?action=decline&sender_uid=${senderUid}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            showToast(data.message, data.status, data.timmer);
+                            loadRequests();
+                        })
+                        .catch(error => showToast(error, 0));
+                    // loadRequests();
+                })
+            }
+        });
+    }
 </script>
