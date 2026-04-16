@@ -5,6 +5,15 @@ isLoggedIn();
 
 $user = getUserDetail($conn, $_SESSION['uid']);
 
+$friendsResult = getFriendList($conn, $user['uid']);
+$friendCount = mysqli_num_rows($friendsResult);
+$friends = [];
+if ($friendCount > 0) {
+    while ($row = mysqli_fetch_assoc($friendsResult)) {
+        $friends[] = $row;
+    }
+}
+
 $pageTitle = 'Profile | Social Connector';
 $currentPage = 'profile';
 include 'includes/header.php';
@@ -60,20 +69,20 @@ include 'includes/sidebar.php';
         <div class="grid grid-cols-3 gap-6">
             <div
                 class="bg-surface-container p-4 lg:p-8 rounded-xl border border-outline-variant/10 hover:border-primary/20 transition-colors ">
-                <span class="text-on-surface-variant text-[10px] font-bold uppercase tracking-widest">Following</span>
-                <p class="text-4xl font-headline font-extrabold text-on-surface mt-3">842</p>
+                <span class="text-on-surface-variant text-[10px] font-bold uppercase tracking-widest">Friends</span>
+                <p class="text-4xl font-headline font-extrabold text-on-surface mt-3"><?= $friendCount ?></p>
             </div>
             <div
                 class="bg-surface-container p-4 lg:p-8 rounded-xl border border-outline-variant/10 hover:border-primary/20 transition-colors ">
                 <span class="text-on-surface-variant text-[10px] font-bold uppercase tracking-widest">My
                     Community</span>
-                <p class="text-4xl font-headline font-extrabold text-on-surface mt-3">3</p>
+                <p class="text-4xl font-headline font-extrabold text-on-surface mt-3">0</p>
             </div>
             <div
                 class="bg-surface-container p-4 lg:p-8 rounded-xl border border-outline-variant/10 hover:border-primary/20 transition-colors ">
                 <span class="text-on-surface-variant text-[10px] font-bold uppercase tracking-widest">Following
                     Community</span>
-                <p class="text-4xl font-headline font-extrabold text-on-surface mt-3">124</p>
+                <p class="text-4xl font-headline font-extrabold text-on-surface mt-3">0</p>
             </div>
         </div>
     </section>
