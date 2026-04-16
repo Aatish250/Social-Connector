@@ -27,24 +27,9 @@ $query = "SELECT * FROM users
                 SELECT sender_uid FROM friendships WHERE reciver_uid = $uid AND status IN ('accepted', 'pending')
             ) LIMIT $userLimit";
 
-// $query = "SELECT u.*, IFNULL(selected_user.status, '') as friendship_status 
-//         FROM users As u
-//         left join (
-//             select reciver_uid as selUid, status from friendships where sender_uid = 1
-//             UNION
-//             select sender_uid as selUid, status from friendships where sender_uid = 1
-//         ) as selected_user
-//         on u.uid = selected_user.selUid
-//         where u.uid != 1
-//         and u.uid not in (
-//             select reciver_uid from friendships where sender_uid = 1 and STATUS = 'accepted'
-//             UNION
-//             select sender_uid from friendships where reciver_uid = 1 and status = 'accepted'
-//         )";
-
 $result = mysqli_query($conn, $query);
 
-if ($result && mysqli_num_rows($result) > 1) {
+if ($result && mysqli_num_rows($result) >= 1) {
     while ($foundUser = mysqli_fetch_assoc($result)) {
 
         echo "
