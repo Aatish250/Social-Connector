@@ -1,4 +1,9 @@
 <?php
+require_once "config/db.php";
+require_once "config/auth.php";
+require_once "func/func_user.php";
+isLoggedIn();
+
 $pageTitle = 'Create Community | Social Connector';
 include 'includes/header.php';
 include 'includes/sidebar.php';
@@ -9,64 +14,95 @@ include 'includes/sidebar.php';
     <div class="max-w-4xl mx-auto py-16 px-12">
         <header class="mb-12">
             <h1 class="text-4xl font-extrabold tracking-tight text-on-surface mb-2">
-                <a href="communities.php" class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-color duration-300">
+                <a href="communities.php"
+                    class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-color duration-300">
                     arrow_back_ios
                 </a>
                 Create Community
             </h1>
-            <p class="text-on-surface-variant">Design the heart of your local network and connect like-minded individuals.</p>
+            <p class="text-on-surface-variant">Design the heart of your local network and connect like-minded
+                individuals.</p>
         </header>
-        <form class="space-y-12">
+        <form id="dataForm" name="dataForm" class="space-y-12" enctype="multipart/form-data">
             <!-- Cover Image Section -->
             <section>
-                <label class="block text-sm font-semibold uppercase tracking-widest text-on-surface-variant mb-4">Cover Presence</label>
+                <label class="block text-sm font-semibold uppercase tracking-widest text-on-surface-variant mb-4">Cover
+                    Presence</label>
                 <div class="relative group">
-                    <div class="h-64 w-full rounded-xl bg-surface-container-low overflow-hidden relative">
-                        <img class="w-full h-full object-cover opacity-60" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAs26UYOI5HSf5Zj8TqwxRkmo6yBNAd1x9WI15_RDuEHuUghWga7eUIvit5ZLJr2MKxxJJbeeVgm-JZP75BbPYCHk2I33kMrjTdBv3ZDiIO8_VszzAINEr9b-qHi8usqMU1Uc1irXX8FzvZ8dLDVIa8HX7mE0pYxLW_WcTuSBO044h4ngse4irRUrUzKeh2vFC-ls7B8td-llTerX7kBuXV65_M8HzOuQ8p5MWFB5A0p5SokCWrDYidkzCpiyOUBHxGiWT0X7sapQ"/>
-                        <div class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <button class="bg-primary-container text-on-primary-container px-6 py-3 rounded-lg font-bold flex items-center gap-2 transform scale-95 active:opacity-80 transition-all" type="button">
+                    <div class="h-64 w-full rounded-xl bg-surface-container-low overflow-hidden relative cursor-pointer group"
+                        onclick="document.getElementById('cover_image').click()">
+                        <img id="cover-preview" class="w-full h-full object-cover opacity-60"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAs26UYOI5HSf5Zj8TqwxRkmo6yBNAd1x9WI15_RDuEHuUghWga7eUIvit5ZLJr2MKxxJJbeeVgm-JZP75BbPYCHk2I33kMrjTdBv3ZDiIO8_VszzAINEr9b-qHi8usqMU1Uc1irXX8FzvZ8dLDVIa8HX7mE0pYxLW_WcTuSBO044h4ngse4irRUrUzKeh2vFC-ls7B8td-llTerX7kBuXV65_M8HzOuQ8p5MWFB5A0p5SokCWrDYidkzCpiyOUBHxGiWT0X7sapQ" />
+                        <div
+                            class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <span
+                                class="bg-primary-container text-on-primary-container px-6 py-3 rounded-lg font-bold flex items-center gap-2 transform scale-95 transition-all">
                                 <span class="material-symbols-outlined">edit</span>
                                 Edit Picture
-                            </button>
+                            </span>
                         </div>
                     </div>
-                    <button class="absolute bottom-4 right-4 bg-surface-container-highest/80 backdrop-blur-md text-on-surface px-4 py-2 rounded-full text-xs font-bold border border-outline-variant/20" type="button">
+                    <label
+                        class="absolute bottom-4 right-4 bg-surface-container-highest/80 backdrop-blur-md text-on-surface px-4 py-2 rounded-full text-xs font-bold border border-outline-variant/20 cursor-pointer hover:bg-surface-container-high transition-all"
+                        for="cover_image">
                         Upload Cover Image
-                    </button>
+                    </label>
+                    <input type="file" id="cover_image" name="cover_image" class="hidden" accept="image/*" />
                 </div>
             </section>
             <!-- Basic Info Bento Section -->
             <div class="grid grid-cols-1 gap-8">
                 <!-- Name Input (Full Width) -->
                 <div class="space-y-3">
-                    <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant" for="comm-name">Community Name</label>
-                    <input class="w-full bg-surface-container-low border-none rounded-xl py-4 px-5 text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/50 transition-all" id="comm-name" placeholder="e.g. Nocturne Digital Collective" type="text"/>
+                    <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant"
+                        for="comm-name">Community Name</label>
+                    <input
+                        class="w-full bg-surface-container-low border-none rounded-xl py-4 px-5 text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/50 transition-all"
+                        id="comm-name" name="comm-name" placeholder="e.g. Nocturne Digital Collective" type="text" />
                 </div>
                 <!-- Category and Location: 2-Column Stack on Md+ -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <!-- Category Select -->
                     <div class="space-y-3">
-                        <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant" for="comm-category">Category</label>
-                        <select class="w-full bg-surface-container-low border-none rounded-xl py-4 px-5 text-on-surface focus:ring-2 focus:ring-primary/50 transition-all" id="comm-category">
+                        <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant"
+                            for="comm-category">Category</label>
+                        <select
+                            class="w-full bg-surface-container-low border-none rounded-xl py-4 px-5 text-on-surface focus:ring-2 focus:ring-primary/50 transition-all"
+                            id="comm-category" name="comm-category">
                             <option value="">Select a category</option>
                             <option value="technology">Technology</option>
-                            <option value="arts">Arts</option>
-                            <option value="sports">Sports</option>
+                            <option value="arts">Arts & Culture</option>
+                            <option value="sports">Sports & Fitness</option>
                             <option value="gaming">Gaming</option>
                             <option value="education">Education</option>
-                            <option value="health">Health</option>
-                            <option value="business">Business</option>
-                            <option value="community">Community</option>
+                            <option value="health">Health & Wellness</option>
+                            <option value="business">Business & Entrepreneurship</option>
+                            <option value="community">Community & Social</option>
+                            <option value="music">Music</option>
+                            <option value="photography">Photography</option>
+                            <option value="travel">Travel & Adventure</option>
+                            <option value="food">Food & Cooking</option>
+                            <option value="fashion">Fashion</option>
+                            <option value="science">Science & Research</option>
+                            <option value="environment">Environment</option>
+                            <option value="finance">Finance & Investment</option>
+                            <option value="spirituality">Spirituality & Mindfulness</option>
+                            <option value="literature">Literature & Books</option>
+                            <option value="film">Film & Cinema</option>
+                            <option value="activism">Social Activism</option>
                             <option value="other">Other</option>
                         </select>
                     </div>
                     <!-- Location Select (77 Districts of Nepal) -->
                     <div class="space-y-3">
-                        <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant" for="comm-location">Location</label>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant"
+                            for="comm-location">Location</label>
                         <div class="relative">
-                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">location_on</span>
-                            <select class="w-full bg-surface-container-low border-none rounded-xl py-4 pl-12 pr-5 text-on-surface focus:ring-2 focus:ring-primary/50 transition-all"
-                                id="comm-location">
+                            <span
+                                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">location_on</span>
+                            <select
+                                class="w-full bg-surface-container-low border-none rounded-xl py-4 pl-12 pr-5 text-on-surface focus:ring-2 focus:ring-primary/50 transition-all"
+                                id="comm-location" name="comm-location">
                                 <option value="">Select a district</option>
                                 <option value="Achham">Achham</option>
                                 <option value="Arghakhanchi">Arghakhanchi</option>
@@ -115,8 +151,10 @@ include 'includes/sidebar.php';
                                 <option value="Mugu">Mugu</option>
                                 <option value="Mustang">Mustang</option>
                                 <option value="Myagdi">Myagdi</option>
-                                <option value="Nawalparasi (Bardaghat Susta East)">Nawalparasi (Bardaghat Susta East)</option>
-                                <option value="Nawalparasi (Bardaghat Susta West)">Nawalparasi (Bardaghat Susta West)</option>
+                                <option value="Nawalparasi (Bardaghat Susta East)">Nawalparasi (Bardaghat Susta East)
+                                </option>
+                                <option value="Nawalparasi (Bardaghat Susta West)">Nawalparasi (Bardaghat Susta West)
+                                </option>
                                 <option value="Nuwakot">Nuwakot</option>
                                 <option value="Okhaldhunga">Okhaldhunga</option>
                                 <option value="Palpa">Palpa</option>
@@ -151,17 +189,24 @@ include 'includes/sidebar.php';
                 </div>
                 <!-- Description Textarea (Full Width) -->
                 <div class="space-y-3">
-                    <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant" for="comm-info">Community Info</label>
-                    <textarea class="w-full bg-surface-container-low border-none rounded-xl py-4 px-5 text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/50 transition-all resize-none" id="comm-info" placeholder="Describe the mission, values, and energy of your community..." rows="6"></textarea>
+                    <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant"
+                        for="comm-info">Community Info</label>
+                    <textarea
+                        class="w-full bg-surface-container-low border-none rounded-xl py-4 px-5 text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/50 transition-all resize-none"
+                        id="comm-info" name="comm-info"
+                        placeholder="Describe the mission, values, and energy of your community..." rows="6"></textarea>
                 </div>
             </div>
             <!-- Action Footer -->
             <footer class="pt-12 mt-12 border-t border-outline-variant/10 flex items-center justify-end gap-6">
-                <a href="profile.php" class="text-on-surface-variant font-semibold hover:text-on-surface transition-colors">
+                <a href="profile.php"
+                    class="text-on-surface-variant font-semibold hover:text-on-surface transition-colors">
                     Cancel
                 </a>
-                <button class="px-10 py-4 bg-gradient-to-br from-primary to-primary-dim text-on-primary-container rounded-xl font-extrabold text-lg shadow-xl shadow-primary/10 hover:shadow-primary/20 transform active:scale-95 transition-all" type="submit">
-                    Update Community
+                <button
+                    class="px-10 py-4 bg-gradient-to-br from-primary to-primary-dim text-on-primary-container rounded-xl font-extrabold text-lg shadow-xl shadow-primary/10 hover:shadow-primary/20 transform active:scale-95 transition-all"
+                    type="submit">
+                    Create Community
                 </button>
             </footer>
         </form>
@@ -169,3 +214,42 @@ include 'includes/sidebar.php';
 </main>
 
 <?php include 'includes/footer.php'; ?>
+
+<script>
+    const myForm = document.getElementById('dataForm');
+
+    myForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const submitBtn = myForm.querySelector("button[type=submit]");
+        submitBtn.disabled = true;
+        const formData = new FormData(myForm);
+
+        fetch('php/create-community_process.php', {
+            method: "POST",
+            body: formData
+        }).then(response => response.json())
+            .then(data => {
+                showToast(data.message, data.status, data.timmer);
+                if (data.status == 1) {
+                    setTimeout(() => {
+                        window.location.href = 'profile.php';
+                    }, data.timmer * 200);
+                }
+            }).catch(error => {
+                showToast('Something went wrong', 0, 5);
+            })
+    });
+
+    // Cover image preview
+    document.getElementById('cover_image').addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const preview = document.getElementById('cover-preview');
+                preview.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>

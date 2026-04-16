@@ -25,3 +25,25 @@ CREATE TABLE IF NOT EXISTS friendships (
     FOREIGN KEY (sender_uid) REFERENCES users(uid),
     FOREIGN KEY (reciver_id) REFERENCES users(uid)
 );
+
+CREATE TABLE IF NOT EXISTS communities (
+    cid INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    category VARCHAR(100),
+    location VARCHAR(255),
+    description TEXT,
+    cover_image VARCHAR(255),
+    created_by INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (created_by) REFERENCES users(uid)
+);
+
+CREATE TABLE IF NOT EXISTS community_members (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    uid INT NOT NULL,
+    cid INT NOT NULL,
+    role ENUM('owner', 'admin', 'moderator', 'member') DEFAULT 'member',
+    joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (uid) REFERENCES users(uid),
+    FOREIGN KEY (cid) REFERENCES communities(cid) ON DELETE CASCADE
+);
