@@ -1,6 +1,7 @@
 <?php
 require_once "config/db.php";
 require_once "config/auth.php";
+require_once "func/func_user.php";
 isLoggedIn();
 
 $user = getUserDetail($conn, $_SESSION['uid']);

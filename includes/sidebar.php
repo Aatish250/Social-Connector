@@ -2,6 +2,7 @@
 
 require_once "config/db.php";
 require_once "config/auth.php";
+// require_once "func/func_user.php";
 $user = getUserDetail($conn, $_SESSION['uid']);
 
 $currentPage = isset($currentPage) ? $currentPage : '';

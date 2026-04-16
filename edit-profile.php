@@ -1,6 +1,7 @@
 <?php
 require_once "config/db.php";
 require_once "config/auth.php";
+require_once "func/func_user.php";
 isLoggedIn();
 
 $pageTitle = 'Edit Profile | Social Connector';
@@ -95,7 +96,7 @@ include 'includes/sidebar.php';
                     const input = document.getElementById('profilePicInput');
                     const cancelBtn = document.getElementById('cancelProfilePic');
                     const preview = document.getElementById('profilePicPreview');
-                    
+
                     input.value = "";
                     cancelBtn.style.display = "none";
                 }
@@ -228,7 +229,7 @@ include 'includes/sidebar.php';
         }).then(response => response.json())
             .then(data => {
                 showToast(data.message, data.status, data.timmer);
-                if(data.status == 1) removeProfilePictureCancelBtn();
+                if (data.status == 1) removeProfilePictureCancelBtn();
             }).catch(error => {
                 showToast('Something went wrong', 0, 5);
             })
