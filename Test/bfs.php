@@ -22,12 +22,13 @@ function getUserColumn($conn, $uid, $column)
 
     require "../config/db.php";
     require "../config/auth.php";
+    require "../func/func_user.php";
 
     $uid = $_SESSION['uid'];
 
     $user = getUserDetail($conn, $uid);
 
-    $fid = 2;
+    // $fid = 2;
     $userFriendResult = getFriendList($conn, $uid);
     $userFriendCount = mysqli_num_rows($userFriendResult);
     if ($userFriendCount > 0) {
@@ -59,8 +60,8 @@ function getUserColumn($conn, $uid, $column)
                 <summary>$user Friends Ids: <?= $userFriend['fullname'] ?></summary>
 
                 <pre class="m-2 border-2 border-gray-600 p-2">
-                                                                                                                                                                                                                                        <?= var_dump($userFriend) ?>
-                                                                                                                                                                                                                                    </pre>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <?= var_dump($userFriend) ?>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </pre>
             </details>
 
         <?php } ?>
@@ -85,6 +86,7 @@ function getUserColumn($conn, $uid, $column)
     ?>
 
     <?php
+    echo "<br>DEGREE 3: <br>";
 
     $fouf_ID = [];
 
@@ -92,7 +94,6 @@ function getUserColumn($conn, $uid, $column)
     foreach ($userFriendLists as $ufl)
         $ufl_ID[] = $ufl['uid'];
 
-    echo "<br>DEGREE 3: <br>";
     foreach ($userFriendLists as $ufl) { // search for 2nd degree friend
         echo $ufl['fullname'] . " ==> ";
 
@@ -125,16 +126,52 @@ function getUserColumn($conn, $uid, $column)
     // $unique_fouf_IDs = array_unique($fouf_ID);
     // shuffle($unique_fouf_IDs);
     // echo implode(",", $unique_fouf_IDs);
-
+    
     echo "<br>Show Degree 3 Clear:<br>";
     $unique_fouf_ID = array_unique($fouf_ID);
     echo implode(",", $unique_fouf_ID);
     echo "<br>";
-    foreach($unique_fouf_ID as $fof){
+    foreach ($unique_fouf_ID as $fof) {
         $fofname = getUserColumn($conn, $fof, "fullname");
         echo " ( $fof - $fofname ) ";
     }
 
+    echo "<br>";
+
+    // Now to get muitals of each 3rd degree with user
+    echo "<br>Show Muitals of Degree 3 with Users :<br>";
+
+    // $ufl_ID = []; // stores ids of users friend
+    // foreach ($userFriendLists as $ufl)
+    //     $ufl_ID[] = $ufl['uid'];
+    
+    foreach ($unique_fouf_ID as $fof) {
+        $fofname = getUserColumn($conn, $fof, "fullname");
+        echo "<font color='royalblue'> ( $fof - $fofname )</font> ==> ";
+
+        $fof_friendListResult = getFriendList($conn, $fof);
+        $fof_friendListCount = mysqli_num_rows($fof_friendListResult);
+
+        if ($fof_friendListCount > 0) {
+            while ($fof_fl = mysqli_fetch_assoc($fof_friendListResult)) {
+
+                echo "( " . $fof_fl['uid'] . " - " . $fof_fl['fullname'] . " ) ";
+
+            }
+            mysqli_data_seek($fof_friendListResult, 0);
+            echo "<br>";
+            echo "<b>Mutuals </b> => ";
+            while ($fof_fl = mysqli_fetch_assoc($fof_friendListResult)) {
+
+                if (in_array($fof_fl['uid'], $ufl_ID)) // here : vital condition
+                    echo "( " . $fof_fl['uid'] . " - " . $fof_fl['fullname'] . " ) ";
+
+            }
+            echo "<br>";
+        }
+
+        echo "<br>";
+    }
     ?>
 
 </body>

@@ -36,7 +36,7 @@ include 'includes/sidebar.php';
             </form>
 
             <!-- Searched Values -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-0 mt-5"
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-4 mt-5"
                 id="searchedUser">
             </div>
             <div class="flex justify-center flex-col md:flex-row gap-4">
@@ -128,36 +128,25 @@ include 'includes/sidebar.php';
                 <!-- contents to be fetch from show_request.php -->
             </section>
             <!-- People You May Know -->
-            <section>
-                <div class="flex items-center justify-between mb-8">
-                    <h2 class="text-xs uppercase tracking-[0.2em] font-bold text-on-surface-variant">People You May Know
-                    </h2>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-10">
-                    <!-- Suggestion 1 -->
-                    <form data-uid="0"
-                        class="userCard flex flex-col items-center text-center p-8 bg-surface-container-high rounded-2xl border border-transparent hover:border-outline-variant/20 transition-all group">
-                        <div class="relative mb-4">
-                            <img alt="Liam Carter"
-                                class="w-24 h-24 rounded-full object-cover p-1 border-2 border-primary/20 group-hover:border-primary transition-all"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGspwDWBdWLVMTYZsa1yji1XGc7DedPj1hv6nXAGnlaCJVn2RT7Kxq0KWtP8I1UB5adTLC_Jh9xPypXiPR7tWLeRMbrag0egrnXgCv1zS3BTD926PYmy4cdVO5YvuzMjLZDdcibMOZ2gJlZ-2bzYDbptGjyGvNXrr73C04fRUM6VgrSv-3OMGGqz7-I9JiJ3XnkG19tPOvP3fFfi6MjBi0I5rT7ch87tKfy5SKS482yHJD1q7zOxEiYouxtm9FuLtLKLqAADWHSA" />
-                        </div>
-                        <h3 class="font-headline font-bold text-lg text-on-surface mb-6">Liam Carter</h3>
-                        <button
-                            class="w-full bg-surface-variant text-on-surface py-3 rounded-lg text-xs font-bold hover:bg-primary hover:text-on-primary-container transition-all">Connect</button>
-                    </form>
-                </div>
-                <div class="flex justify-center">
-                    <button
-                        class="flex items-center gap-2 px-8 py-3 bg-surface-container-high text-on-surface rounded-full font-bold text-sm hover:bg-surface-variant border border-outline-variant/30 transition-all group">
-                        <span>Show More Suggestions</span>
-                        <span
-                            class="material-symbols-outlined text-lg group-hover:translate-y-0.5 transition-transform">expand_more</span>
-                    </button>
-                </div>
+            <section id="suggestUsers">
+
             </section>
+            <div class="flex justify-center flex-col md:flex-row gap-4">
+                <button id="showLessUserSuggestionButton"
+                    class="flex m-auto md:m-1 items-center gap-2 px-8 py-3 bg-surface-container-high text-on-surface rounded-full font-bold text-sm hover:bg-surface-variant border border-outline-variant/30 transition-all group">
+                    <span>Show Less Suggestions</span>
+                    <span
+                        class="material-symbols-outlined text-lg group-hover:translate-y-0.5 transition-transform">expand_less</span>
+                </button>
+                <button id="showMoreUserSuggestionButton"
+                    class="flex m-auto md:m-1 items-center gap-2 px-8 py-3 bg-surface-container-high text-on-surface rounded-full font-bold text-sm hover:bg-surface-variant border border-outline-variant/30 transition-all group">
+                    <span>Show More Suggestions</span>
+                    <span
+                        class="material-symbols-outlined text-lg group-hover:translate-y-0.5 transition-transform">expand_more</span>
+                </button>
+            </div>
             <!-- Search Empty State Style -->
-            <section
+            <!-- <section
                 class="grid grid-cols-1 md:grid-col-2 lg:grid-cols-3 gap-8 items-center bg-surface-container-highest/30 p-8 rounded-3xl">
                 <div class="md:col-span-3 space-y-4">
                     <h2 class="text-3xl font-headline font-bold text-on-surface">Can't find who you're looking for?</h2>
@@ -177,7 +166,7 @@ include 'includes/sidebar.php';
                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYLCvrnN32DcTBx6peOV00VejhwbO782cr20E2vE2VWU1JT6_LFhezwrSR8fCVfzcfDNPkzlDzHO0RcqWdYXWHRAypsVfrv1o4LiflWU7Yh5PvUGJR0Bf0VkWL_73zboF75xnLoy0dbifwiupWLdxiHs51A0Y0M_8htHzX6I6eE4NoBkvIitMVOnzE8Caq5yiZ_dVdAJ3AMPN7OM6o0XX5P7Qg9RmOc-ZvFXh1enF0W_MzOLheSFMwk2Z4u3-SZeJUTTtxIQhfOA" />
                     <div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent"></div>
                 </div>
-            </section>
+            </section> -->
         </div>
     </div>
 </main>
@@ -219,10 +208,9 @@ include 'includes/sidebar.php';
     }
 </script>
 
-
 <script> // on connect button click
 
-    userConnectButton(document.querySelectorAll(".userCard"));
+    // userConnectButton(document.querySelectorAll(".userCard"));
 
     function userConnectButton(userCards) {
         userCards.forEach(card => {
@@ -241,14 +229,16 @@ include 'includes/sidebar.php';
                     .then(data => {
                         showToast(data.message, data.status);
                         fetchUser();
+                        loadRequests();
+                        loadSuggestion(suggestionLimit = 4);
                     });
             })
         });
     }
 
-    function send_user_connection() {
+    // function send_user_connection() {
 
-    }
+    // }
 
 </script>
 
@@ -267,7 +257,7 @@ include 'includes/sidebar.php';
     function requestActionButton() {
         userRequestCards = document.querySelectorAll(".userRequestCard");
         userRequestCards.forEach(card => {
-            const senderUid = card.dataset.senderUid;
+            const cardUid = card.dataset.cardUid;
 
             const acceptBtn = card.querySelector(".acceptBtn");
             if (acceptBtn) {
@@ -275,13 +265,14 @@ include 'includes/sidebar.php';
                 acceptBtn.parentNode.replaceChild(newAcceptBtn, acceptBtn);
                 newAcceptBtn.addEventListener("click", e => {
                     e.preventDefault();
-                    console.log("accept uid:" + senderUid);
+                    console.log("accept uid:" + cardUid);
 
-                    fetch(`php/show_request.php?action=accept&sender_uid=${senderUid}`)
+                    fetch(`php/show_request.php?action=accept&card_uid=${cardUid}`)
                         .then(response => response.json())
                         .then(data => {
                             showToast(data.message, data.status, data.timmer);
                             loadRequests();
+                            loadSuggestion(suggestionLimit = 4);
                         })
                         .catch(error => showToast(error, 0));
                     // loadRequests();
@@ -294,13 +285,34 @@ include 'includes/sidebar.php';
                 declineBtn.parentNode.replaceChild(newDeclineBtn, declineBtn);
                 newDeclineBtn.addEventListener("click", e => {
                     e.preventDefault();
-                    console.log("accept uid:" + senderUid);
+                    console.log("accept uid:" + cardUid);
 
-                    fetch(`php/show_request.php?action=decline&sender_uid=${senderUid}`)
+                    fetch(`php/show_request.php?action=decline&card_uid=${cardUid}`)
                         .then(response => response.json())
                         .then(data => {
                             showToast(data.message, data.status, data.timmer);
                             loadRequests();
+                            loadSuggestion(suggestionLimit = 4);
+                        })
+                        .catch(error => showToast(error, 0));
+                    // loadRequests();
+                })
+            }
+
+            const cancelBtn = card.querySelector(".cancelBtn");
+            if (cancelBtn) {
+                const newCancelBrn = cancelBtn.cloneNode(true);
+                cancelBtn.parentNode.replaceChild(newCancelBrn, cancelBtn);
+                newCancelBrn.addEventListener("click", e => {
+                    e.preventDefault();
+                    console.log("cancel uid:" + cardUid);
+
+                    fetch(`php/show_request.php?action=cancel&card_uid=${cardUid}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            showToast(data.message, data.status, data.timmer);
+                            loadRequests();
+                            loadSuggestion(suggestionLimit = 4);
                         })
                         .catch(error => showToast(error, 0));
                     // loadRequests();
@@ -308,4 +320,42 @@ include 'includes/sidebar.php';
             }
         });
     }
+</script>
+
+<script> // load the suggested people section
+    suggestionLimit = 4;
+    // const suggestionLimit = document.getElementById("suggestionLimit");
+
+    function loadSuggestion(suggestionLimit = 4) {
+        const suggestUsers = document.getElementById('suggestUsers');
+        fetch(`php/suggest_people.php?suggestionLimit=${suggestionLimit}`).then(response => response.text()).then(data => {
+            suggestUsers.innerHTML = data;
+            userConnectButton(document.querySelectorAll(".suggestedUserCard"));
+        });
+    }
+    loadSuggestion(suggestionLimit);
+
+    let showLessUserSuggestionButton = document.getElementById("showLessUserSuggestionButton");
+    showLessUserSuggestionButton.classList.add("hidden");
+    showLessUserSuggestionButton.addEventListener("click", () => {
+        if (suggestionLimit <= 4) {
+            showLessUserSuggestionButton.classList.add("hidden");
+            suggestionLimit = 4;
+        } else {
+            suggestionLimit -= 4;
+            if (suggestionLimit <= 4)
+                showLessUserSuggestionButton.classList.add("hidden");
+        }
+        console.log(suggestionLimit);
+        loadSuggestion(suggestionLimit);
+    })
+    let showMoreUserSuggestionButton = document.getElementById("showMoreUserSuggestionButton");
+    showMoreUserSuggestionButton.addEventListener("click", () => {
+        showLessUserSuggestionButton.classList.remove("hidden");
+        suggestionLimit += 4;
+        console.log(suggestionLimit);
+        loadSuggestion(suggestionLimit);
+    })
+
+
 </script>

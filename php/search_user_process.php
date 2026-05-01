@@ -5,12 +5,14 @@ function send($message, $status = 1)
     echo json_encode(['message' => $message, 'status' => $status]);
     exit;
 }
-
 require_once '../config/db.php';
 require_once '../config/auth.php';
 
-
 $uid = $_SESSION['uid'];
+include "../func/func_user.php";
+include "../algorithm/BFS.php";
+include '../class/class.Mutuals.php';
+
 $name = isset($_POST['searchInput']) ? trim(htmlspecialchars($_POST['searchInput'], ENT_QUOTES, 'UTF-8')) : '';
 $userLimit = isset($_POST['userLimit']) ? $_POST['userLimit'] : 4;
 
@@ -32,21 +34,36 @@ $result = mysqli_query($conn, $query);
 if ($result && mysqli_num_rows($result) >= 1) {
     while ($foundUser = mysqli_fetch_assoc($result)) {
 
-        echo "
-            <form data-uid='" . $foundUser['uid'] . "'
-                class='searchUserCard flex flex-col items-center text-center p-8 bg-surface-container-high rounded-2xl border border-transparent hover:border-outline-variant/20 transition-all group'>
-                <div class='relative mb-4'>
-                    <img alt='" . $foundUser['fullname'] . "'
-                        class='w-24 h-24 rounded-full object-cover p-1 border-2 border-primary/20 group-hover:border-primary transition-all'
-                        src='" . $foundUser['profile_pic'] . "' />
-                </div>
-                <h3 class='font-headline font-bold text-lg text-on-surface mb-6'>" . $foundUser['fullname'] . "</h3>
-                <button
-                    class='w-full bg-surface-variant text-on-surface py-3 rounded-lg text-xs font-bold hover:bg-primary hover:text-on-primary-container transition-all'>
-                    Connect
-                    </button>
-            </form>
-        ";
+        ?>
+        <form data-uid='<?= $foundUser['uid'] ?>'
+            class='searchUserCard flex flex-col items-center text-center p-6 bg-surface-container-high rounded-2xl border border-transparent hover:border-outline-variant/20 transition-all group'>
+            <div class='relative mb-4'>
+                <img alt='<?= $foundUser['fullname'] ?>'
+                    class='w-24 h-24 rounded-full object-cover p-1 border-2 border-primary/20 group-hover:border-primary transition-all'
+                    src='<?= $foundUser['profile_pic'] ?>' />
+            </div>
+            <h3 class='font-headline font-bold text-lg text-on-surface mb-auto'><?= $foundUser['fullname'] ?></h3>
+            <!-- Mutual section -->
+            <div class="flex flex-col -space-y-3 mt-2"></div>
+            <?php
+            $m = new Mutuals($conn, $uid, $foundUser['uid']);
+
+            ?>
+            <p>
+                <span class="text-xs font-medium text-on-surface-variant">
+                    <?= $m->mutualCount() . " mutuals..." ?>
+                </span>
+            </p>
+            </div>
+            <?php
+            $m->echoImage();
+            ?>
+            <button
+                class='w-full bg-surface-variant text-on-surface py-3 rounded-lg text-xs font-bold hover:bg-primary hover:text-on-primary-container transition-all'>
+                Connect
+            </button>
+        </form>
+        <?php
     }
 } else
     echo "";

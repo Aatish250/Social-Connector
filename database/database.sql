@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS friendships (
     id INT(11) NOT NULL AUTO_INCREMENT,
     sender_uid INT NOT NULL,
     reciver_uid INT NOT NULL,
-    status ENUM('pending', 'accepted', 'declined', 'blocked') DEFAULT 'pending',
+    status ENUM('pending', 'accepted', 'declined', 'blocked', 'cancelled') DEFAULT 'pending',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY (sender_uid) REFERENCES users(uid),

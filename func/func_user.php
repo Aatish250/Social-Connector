@@ -31,28 +31,4 @@ function getFriendList($conn, $uid)
     else if (mysqli_num_rows($result) < 1)
         return 0;
 }
-// function implodeQueryResult($queryResult, $field)
-// {
-//     if ($queryResult && mysqli_num_rows($queryResult) > 0) {
-//         $friendNames = [];
 
-//         while ($row = mysqli_fetch_assoc($queryResult)) {
-//             $friendNames[] = $row[$field];
-//         }
-
-//         $formattedList = "(" . implode(", ", $friendNames) . ")";
-
-//         return ($formattedList);
-//     } else {
-//         return ("()");
-//     }
-// }
-
-// function getFriendship($conn, $uid, $friendUid)
-// {
-//     $query = "SELECT * FROM friendships WHERE ((uid = $uid AND friend_uid = $friendUid) OR (uid = $friendUid AND friend_uid = $uid))";
-//     $result = mysqli_query($conn, $query);
-//     if (mysqli_num_rows($result) == 1)
-//         return mysqli_fetch_assoc($result);
-//     return "";
-// }
