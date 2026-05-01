@@ -4,10 +4,9 @@ require_once "config/auth.php";
 require_once "func/func_user.php";
 isLoggedIn();
 
-$uid = $_SESSION['uid'];
-$user = getUserDetail($conn, $_SESSION['uid']);
+$uid = $_GET['user'];
 
-$friendsResult = getFriendList($conn, $user['uid']);
+$friendsResult = getFriendList($conn, $uid);
 $friendCount = mysqli_num_rows($friendsResult);
 $friends = [];
 if ($friendCount > 0)
@@ -24,6 +23,7 @@ $pageTitle = 'Profile | Social Connector';
 $currentPage = 'profile';
 include 'includes/header.php';
 include 'includes/sidebar.php';
+$user = getUserDetail($conn, $uid);
 ?>
 
 <main class="ml-20 lg:ml-64 flex-grow p-12 min-h-screen bg-surface">
@@ -38,10 +38,6 @@ include 'includes/sidebar.php';
                 <div>
                     <h1 class="font-headline text-5xl font-extrabold tracking-tighter text-on-surface mb-3 flex gap-5">
                         <?php echo $user['fullname']; ?>
-                        <a href="edit-profile.php"
-                            class="material-symbols-outlined hover:text-primary transition-color duration-300 hover:scale-105">
-                            edit_square
-                        </a>
                     </h1>
                     <p class="text-on-surface-variant font-medium text-lg max-w-xl leading-relaxed">
                         <?php echo $user['bio']; ?>
@@ -99,18 +95,14 @@ include 'includes/sidebar.php';
     <!-- Friends List Section -->
     <?php if ($friendCount > 0): ?>
         <section class="mt-16">
-            <!-- <span
-                class="font-headline text-2xl font-bold tracking-tight text-on-surface cursor-pointer transition-all duration-200 hover:bg-primary/10 hover:text-primary rounded-lg px-4 py-2">
-            </span> -->
-            <div class="flex items-center justify-between ">
-                <div>
-                    <h2 class="font-headline text-2xl font-bold tracking-tight text-on-surface">
-                        Friend List <span class="font-light">( <?= $friendCount ?> )</span>
-                    </h2>
-               
-                </div>
+            <!-- SHow mutual friend list -->
+            <div class="flex items-center my-3">
+                <hr class="flex-grow border-t border-outline-variant/20">
+                <span class="mx-3 text-xs text-on-surface-variant font-medium uppercase tracking-widest">
+                    <?= htmlspecialchars(explode(' ', trim($user['fullname']))[0]) ?>'s' Friends <span class="text-primary text-md font-light">( <?= $friendCount ?> )</span>
+                </span>
+                <hr class="flex-grow border-t border-outline-variant/20">
             </div>
-
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 my-6">
                 <?php foreach ($friends as $friend): ?>
                     <a href="view-profile.php?user=<?= $friend['uid'] ?>"
@@ -139,23 +131,26 @@ include 'includes/sidebar.php';
                     </a>
                 <?php endforeach; ?>
             </div>
+
+            <!-- Show friends friend -->
+            <!-- <div class="flex items-center my-3">
+                <hr class="flex-grow border-t border-outline-variant/20">
+                <span class="mx-3 text-xs text-on-surface-variant font-medium uppercase tracking-widest"><?php //echo htmlspecialchars(explode(' ', trim($user['fullname']))[0]); ?>'s Friends</span>
+                <hr class="flex-grow border-t border-outline-variant/20">
+            </div> -->
         </section>
     <?php endif ?>
-
-
     <!-- Owned Communities Section -->
     <section class="mb-16 mt-16 max-w-6xl mx-auto">
-        <div class="flex items-center justify-between mb-10">
-            <div>
-                <h2 class="font-headline text-2xl font-bold tracking-tight text-on-surface">Owned Communities <span class="font-light">( <?= $myCommunityCount ?> )</span></h2>
-                <p class="text-on-surface-variant text-sm mt-2">Exclusive circles managed and moderated by you.</p>
-            </div>
-            <a href="create-community.php"
-                class="flex items-center gap-2 px-6 py-3 bg-primary text-on-primary rounded-lg text-sm font-bold hover:opacity-90 transition-all shadow-lg shadow-primary/20">
-                <span class="material-symbols-outlined text-lg">add_circle</span>
-                Create New Community
-            </a>
+
+        <div class="flex items-center my-3">
+            <hr class="flex-grow border-t border-outline-variant/20">
+            <span class="mx-3 text-xs text-on-surface-variant font-medium uppercase tracking-widest">
+                <?= htmlspecialchars(explode(' ', trim($user['fullname']))[0]) ?>'s' Community <span class="text-primary text-md font-light">( <?= $myCommunityCount ?> )</span>
+            </span>
+            <hr class="flex-grow border-t border-outline-variant/20">
         </div>
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <?php
             if ($myCommunityCount > 0) {

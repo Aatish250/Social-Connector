@@ -31,15 +31,19 @@ $fof_IDs = getFriendsOfFriendsIDs($conn, $uid);
 
         <form data-uid="<?= $foufDetail['uid'] ?>"
             class="suggestedUserCard flex flex-col items-center text-center p-6 bg-surface-container-high rounded-2xl border border-transparent hover:border-outline-variant/20 transition-all group">
-            <div class="relative mb-4">
-                <img alt="<?= $foufDetail['fullname'] ?>"
-                    class="w-24 h-24 rounded-full object-cover p-1 border-2 border-primary/20 group-hover:border-primary transition-all"
-                    src="<?= $foufDetail['profile_pic'] ?>" />
-            </div>
-            <span class="font-headline font-bold text-lg text-on-surface mb-auto">
-                <?= $foufDetail['fullname'] ?>
-            </span>
-
+            <a href="view-profile.php?user=<?= $foufDetail['uid'] ?>" class="block group/link flex-1 border-b-2 border-outline-variant/20">
+       
+                <div class="relative mb-2 flex items-cente justify-center">
+                    <img alt="<?= $foufDetail['fullname'] ?>"
+                        class="w-24 h-24 rounded-full object-cover p-1 border-2 border-primary/20 group-hover:border-primary transition-all"
+                        src="<?= $foufDetail['profile_pic'] ?>" />
+                </div>
+                <span
+                    class="font-headline font-bold text-lg text-on-surface mb-2 block group-hover/link:text-primary transition-colors">
+                    <?= $foufDetail['fullname'] ?>
+                </span>
+            </a>
+            <hr>
             <!-- Mutual section -->
             <div class="flex flex-col -space-y-3 mt-2">
                 <?php
@@ -57,7 +61,7 @@ $fof_IDs = getFriendsOfFriendsIDs($conn, $uid);
             </div>
 
             <button
-                class="w-full bg-surface-variant text-on-surface py-3 rounded-lg text-xs font-bold hover:bg-primary hover:text-on-primary-container transition-all">Connect</button>
+                class="w-full bg-surface-variant text-on-surface py-3 rounded-lg text-xs font-bold hover:bg-primary hover:text-on-primary-container transition-all mt-auto">Connect</button>
         </form>
     <?php }
     ?>

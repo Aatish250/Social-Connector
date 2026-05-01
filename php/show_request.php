@@ -68,7 +68,7 @@ if ($friendCount > 0) {
     <div class="flex items-center justify-between mb-8">
         <h2 class="text-xs uppercase tracking-[0.2em] font-bold text-on-surface-variant">Pending Requests
         </h2>
-        <span class="text-xs text-primary font-bold"><?= $friendCount ?> Notifications</span>
+        <span class="text-xs text-primary font-bold"><?= $friendCount ?> Request Pending</span>
     </div>
     <div class="mb-10 grid grid-cols-1 lg:grid-cols-2 gap-3">
 
@@ -77,15 +77,17 @@ if ($friendCount > 0) {
             $friendDetail = getUserDetail($conn, $friend['sender_uid']);
             ?>
             <!-- Request Card 1 -->
-            <form data-card-uid="<?= $friend['sender_uid'] ?>"
+            <form data-card-uid="<?= $friendDetail['uid'] ?>"
                 class="userRequestCard bg-surface-container-high p-3 rounded-xl flex items-center justify-between group hover:bg-surface-variant transition-all duration-300">
                 <div class="flex items-center gap-4 w-full">
-                    <img alt="<?= $friendDetail['fullname'] ?>" class="w-20 h-20 rounded-md object-cover transition-all"
-                        src="<?= $friendDetail['profile_pic'] ?>" />
+                    <a href="view-profile.php?user=<?= $friendDetail['uid'] ?>" class="block group/link">
+                        <img alt="<?= $friendDetail['fullname'] ?>" class="w-20 h-20 rounded-md object-cover transition-all group-hover/link:opacity-80"
+                            src="<?= $friendDetail['profile_pic'] ?>" />
+                    </a>
                     <div class="flex-1 w-0 min-w-0">
-                        <div class="font-headline font-bold text-on-surface w-full truncate sm:whitespace-normal">
+                        <a href="view-profile.php?user=<?= $friendDetail['uid'] ?>" class="font-headline font-bold text-on-surface w-full truncate sm:whitespace-normal hover:text-primary transition-colors">
                             <?= $friendDetail['fullname'] ?>
-                        </div>
+                        </a>
                         <!-- Mutuals -->
                         <?php
                         $m = new Mutuals($conn, $uid, $friendDetail['uid']);
@@ -136,15 +138,17 @@ if ($friendCount > 0) {
             $friendDetail = getUserDetail($conn, $friend['reciver_uid']);
             ?>
             <!-- Request Card 1 -->
-            <form data-card-uid="<?= $friend['reciver_uid'] ?>"
+            <form data-card-uid="<?= $friendDetail['uid'] ?>"
                 class="userRequestCard bg-surface-container-high p-3 rounded-xl flex items-center justify-between group hover:bg-surface-variant transition-all duration-300">
                 <div class="flex items-center gap-4 w-full">
-                    <img alt="<?= $friendDetail['fullname'] ?>" class="w-20 h-20 rounded-md object-cover transition-all"
-                        src="<?= $friendDetail['profile_pic'] ?>" />
+                    <a href="view-profile.php?user=<?= $friendDetail['uid'] ?>" class="block group/link">
+                        <img alt="<?= $friendDetail['fullname'] ?>" class="w-20 h-20 rounded-md object-cover transition-all group-hover/link:opacity-80"
+                            src="<?= $friendDetail['profile_pic'] ?>" />
+                    </a>
                     <div class="flex-1 w-0 min-w-0">
-                        <div class="font-headline font-bold text-on-surface w-full truncate sm:whitespace-normal">
+                        <a href="view-profile.php?user=<?= $friendDetail['uid'] ?>" class="font-headline font-bold text-on-surface w-full truncate sm:whitespace-normal hover:text-primary transition-colors">
                             <?= $friendDetail['fullname'] ?>
-                        </div>
+                        </a>
                         <!-- Mutuals -->
                         <?php
                         $m = new Mutuals($conn, $uid, $friendDetail['uid']);
