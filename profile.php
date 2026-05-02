@@ -17,7 +17,24 @@ if ($friendCount > 0)
 $query = "SELECT * FROM communities WHERE created_by = $uid";
 $myCommunityResult = mysqli_query($conn, $query);
 $myCommunityCount = mysqli_num_rows($myCommunityResult);
-$myCommunity = mysqli_fetch_assoc($myCommunityResult);
+$myCommunities = [];
+while ($row = mysqli_fetch_assoc($myCommunityResult)) {
+    $myCommunities[] = $row;
+}
+
+// Get count of communities the user is a member of (following/joined)
+$followingCommunityQuery = "
+    SELECT COUNT(DISTINCT cm.cid) AS following_count
+    FROM community_members cm
+    WHERE cm.uid = $uid AND cm.role = 'member'
+";
+$followingCommunityResult = mysqli_query($conn, $followingCommunityQuery);
+
+$followingCommunityCount = 0;
+if ($followingCommunityResult && $row = mysqli_fetch_assoc($followingCommunityResult)) {
+    $followingCommunityCount = (int)$row['following_count'];
+}
+
 
 
 $pageTitle = 'Profile | Social Connector';
@@ -91,7 +108,7 @@ include 'includes/sidebar.php';
                 <span class="text-on-surface-variant text-[10px] font-bold uppercase tracking-widest">Following
                     Community</span>
                 <p class="text-4xl font-headline font-extrabold text-on-surface mt-3">
-                    0
+                    <?= $followingCommunityCount ?>
                 </p>
             </div>
         </div>
@@ -107,7 +124,7 @@ include 'includes/sidebar.php';
                     <h2 class="font-headline text-2xl font-bold tracking-tight text-on-surface">
                         Friend List <span class="font-light">( <?= $friendCount ?> )</span>
                     </h2>
-               
+
                 </div>
             </div>
 
@@ -127,7 +144,8 @@ include 'includes/sidebar.php';
                         </div>
 
                         <div>
-                            <div class="font-semibold text-on-surface text-lg group-hover:text-primary"><?= htmlspecialchars($friend['fullname']) ?>
+                            <div class="font-semibold text-on-surface text-lg group-hover:text-primary">
+                                <?= htmlspecialchars($friend['fullname']) ?>
                             </div>
                             <?php if (!empty($friend['location'])): ?>
                                 <div class="flex items-center gap-1 text-xs text-on-surface-variant mt-1">
@@ -147,7 +165,8 @@ include 'includes/sidebar.php';
     <section class="mb-16 mt-16 max-w-6xl mx-auto">
         <div class="flex items-center justify-between mb-10">
             <div>
-                <h2 class="font-headline text-2xl font-bold tracking-tight text-on-surface">Owned Communities <span class="font-light">( <?= $myCommunityCount ?> )</span></h2>
+                <h2 class="font-headline text-2xl font-bold tracking-tight text-on-surface">Owned Communities <span
+                        class="font-light">( <?= $myCommunityCount ?> )</span></h2>
                 <p class="text-on-surface-variant text-sm mt-2">Exclusive circles managed and moderated by you.</p>
             </div>
             <a href="create-community.php"
@@ -159,34 +178,36 @@ include 'includes/sidebar.php';
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <?php
             if ($myCommunityCount > 0) {
-                ?> <!-- Community Card 1 -->
-                <div
-                    class="group bg-surface-container rounded-2xl overflow-hidden border border-outline-variant/10 hover:border-primary/30 transition-all duration-300">
-                    <div class="h-56 overflow-hidden">
-                        <img alt="<?= $myCommunity['name'] ?>"
-                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                            src="<?= $myCommunity['cover_image'] ?>" />
-                    </div>
-                    <div class="p-6">
-                        <h3
-                            class="font-headline text-xl font-bold text-on-surface mb-3 group-hover:text-primary transition-colors">
-                            <?= $myCommunity['name'] ?>
-                        </h3>
-                        <p class="text-on-surface-variant text-sm line-clamp-2 mb-6 leading-relaxed">A high-end circle for
-                            architects and industrial designers focusing on Bauhaus principles.</p>
-                        <div class="flex items-center justify-between pt-5 border-t border-outline-variant/10">
-                            <div class="flex items-center gap-2 text-xs font-semibold text-on-surface-variant">
-                                <span class="material-symbols-outlined text-sm">groups</span>
-                                <span><?= $myCommunityCount ?> Members</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-xs font-semibold text-on-surface-variant">
-                                <span class="material-symbols-outlined text-sm">location_on</span>
-                                <span><?= $myCommunity['location'] ?></span>
+                foreach ($myCommunities as $myCommunity):
+                    ?> <!-- Community Card 1 -->
+                    <a href="view-community.php?cid=<?= $myCommunity['cid'] ?>"
+                        class="group bg-surface-container rounded-2xl overflow-hidden border border-outline-variant/10 hover:border-primary/30 transition-all duration-300">
+                        <div class="h-56 overflow-hidden">
+                            <img alt="<?= $myCommunity['name'] ?>"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                                src="<?= $myCommunity['cover_image'] ?>" />
+                        </div>
+                        <div class="p-6">
+                            <h3
+                                class="font-headline text-xl font-bold text-on-surface mb-3 group-hover:text-primary transition-colors">
+                                <?= $myCommunity['name'] ?>
+                            </h3>
+                            <p class="text-on-surface-variant text-sm line-clamp-2 mb-6 leading-relaxed">A high-end circle for
+                                architects and industrial designers focusing on Bauhaus principles.</p>
+                            <div class="flex items-center justify-between pt-5 border-t border-outline-variant/10">
+                                <div class="flex items-center gap-2 text-xs font-semibold text-on-surface-variant">
+                                    <span class="material-symbols-outlined text-sm">groups</span>
+                                    <span><?= $myCommunityCount ?> Members (ERROR)</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs font-semibold text-on-surface-variant">
+                                    <span class="material-symbols-outlined text-sm">location_on</span>
+                                    <span><?= $myCommunity['location'] ?></span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            <?php } ?>
+                    </a>
+                <?php endforeach;
+            } ?>
         </div>
     </section>
 </main>
