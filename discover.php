@@ -1,4 +1,11 @@
 <?php
+require_once "config/db.php";
+require_once "config/auth.php";
+require_once "func/func_user.php";
+isLoggedIn();
+
+$uid = $_SESSION['uid'];
+
 $pageTitle = 'Discover | Social Connector';
 $currentPage = 'discover';
 include 'includes/header.php';
