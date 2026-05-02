@@ -98,7 +98,7 @@ include 'includes/sidebar.php';
     </section>
     <!-- Friends List Section -->
     <?php if ($friendCount > 0): ?>
-        <section class="mt-16">
+        <section class="mt-16 max-w-6xl mx-auto">
             <!-- <span
                 class="font-headline text-2xl font-bold tracking-tight text-on-surface cursor-pointer transition-all duration-200 hover:bg-primary/10 hover:text-primary rounded-lg px-4 py-2">
             </span> -->
