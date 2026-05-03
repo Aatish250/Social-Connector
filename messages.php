@@ -37,9 +37,14 @@ include 'includes/sidebar.php';
         fetch(`php_message/fetch_header.php?target=${currentTargetUid}`)
             .then(res => res.text())
             .then(html => {
-                header.innerHTML = html;
-            })
-            .catch(err => console.error("Header fetch error:", err));
+                // ONLY update if we got actual content back
+                if (html.trim() !== "") {
+                    header.classList.remove('hidden'); // Show it if it was hidden
+                    header.innerHTML = html;
+                } else {
+                    header.classList.add('hidden'); // Hide if unauthorized
+                }
+            });
     };
 
     // 2. Function to Refresh the Input Area (Send button vs Locked message)
@@ -50,9 +55,13 @@ include 'includes/sidebar.php';
         fetch(`php_message/fetch_input.php?target=${currentTargetUid}`)
             .then(res => res.text())
             .then(html => {
-                inputArea.innerHTML = html;
-            })
-            .catch(err => console.error("Input fetch error:", err));
+                if (html.trim() !== "") {
+                    inputArea.classList.remove('hidden');
+                    inputArea.innerHTML = html;
+                } else {
+                    inputArea.classList.add('hidden');
+                }
+            });
     };
 
     // 3. Function to Refresh the Sidebar
@@ -77,9 +86,13 @@ include 'includes/sidebar.php';
         fetch(`php_message/fetch_chat.php?target=${currentTargetUid}`)
             .then(res => res.text())
             .then(html => {
-                if (chatBox.innerHTML !== html) {
-                    chatBox.innerHTML = html;
-                    chatBox.scrollTop = chatBox.scrollHeight;
+                // CRITICAL: Only overwrite if we have actual messages.
+                // This prevents overwriting "User Not Found" with a blank screen.
+                if (html.trim() !== "") {
+                    if (chatBox.innerHTML !== html) {
+                        chatBox.innerHTML = html;
+                        chatBox.scrollTop = chatBox.scrollHeight;
+                    }
                 }
             });
     };
@@ -88,11 +101,12 @@ include 'includes/sidebar.php';
     window.switchChat = function (newUid) {
         currentTargetUid = newUid;
 
-        // Update URL
+        // Optional: Show a quick loader while switching
+        document.getElementById('chat-box').innerHTML = '<div class="opacity-20 p-10 text-center">Loading...</div>';
+
         const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?target=' + newUid;
         window.history.pushState({ path: newurl }, '', newurl);
 
-        // Run all updates
         fetchHeader();
         fetchMessages();
         fetchSidebar();

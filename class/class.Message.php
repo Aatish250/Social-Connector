@@ -89,4 +89,22 @@ class Message
         }
         return 'none';
     }
+
+    // Inside class.Message.php
+    public function isUserConnected($target_uid)
+    {
+        // Note the spelling 'reciver_uid' from your CREATE TABLE statement
+        $sql = "SELECT 1 FROM friendships 
+            WHERE (
+                (sender_uid = ? AND reciver_uid = ?) 
+                OR 
+                (sender_uid = ? AND reciver_uid = ?)
+            ) 
+            AND status = 'accepted' LIMIT 1";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("iiii", $this->uid, $target_uid, $target_uid, $this->uid);
+        $stmt->execute();
+        return $stmt->get_result()->num_rows > 0;
+    }
 }
