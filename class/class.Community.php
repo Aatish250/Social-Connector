@@ -211,4 +211,14 @@ class Community
             }
         }
     }
+
+    public function getCommunityMemberCount($cid)
+    {
+        $cid = mysqli_real_escape_string($this->conn, $cid);
+
+        $query = "SELECT COUNT(uid) AS member_count FROM community_members WHERE cid = $cid";
+        $result = mysqli_query($this->conn, $query);
+        $data = mysqli_fetch_assoc($result);
+        return $data['member_count'];
+    }
 }
