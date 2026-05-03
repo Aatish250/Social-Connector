@@ -44,8 +44,9 @@ include 'includes/sidebar.php';
 
         <section>
             <!-- Bento Community Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div id="community-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 transition-opacity duration-300">
                     <?php
+                    define('INCLUDED', true);
                     include "php/suggest_community.php";
                     ?>
             </div>
@@ -53,5 +54,38 @@ include 'includes/sidebar.php';
 
     </div>
 </main>
+
+<script>
+function loadRecommendedCommunities() {
+    const grid = document.getElementById('community-grid');
+    grid.style.opacity = '0.5';
+    
+    fetch('php/suggest_community.php')
+    .then(response => response.text())
+    .then(html => {
+        grid.innerHTML = html;
+        grid.style.opacity = '1';
+    })
+    .catch(error => {
+        console.error('Error loading communities:', error);
+        grid.style.opacity = '1';
+    });
+}
+
+function joinCommunity(cid) {
+    fetch(`php/community_process.php?action=join&cid=${cid}`)
+    .then(response => response.json())
+    .then(data => {
+        showToast(data.message, data.status, data.timmer);
+        if (data.status === 1) {
+            // Refresh the grid instead of the whole page
+            loadRecommendedCommunities();
+        }
+    })
+    .catch(error => {
+        showToast("Something went wrong", 0);
+    });
+}
+</script>
 
 <?php include 'includes/footer.php'; ?>
