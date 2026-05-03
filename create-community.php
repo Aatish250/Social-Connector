@@ -220,11 +220,20 @@ include 'includes/sidebar.php';
 
     myForm.addEventListener('submit', function (e) {
         e.preventDefault();
+
+        // Check if a cover image is uploaded
+        const coverInput = document.getElementById('cover_image');
+        if (!coverInput.files || coverInput.files.length === 0) {
+            showToast("please insert the cover picture", 0, 4);
+            return;
+        }
+
         const submitBtn = myForm.querySelector("button[type=submit]");
         submitBtn.disabled = true;
         const formData = new FormData(myForm);
 
-        fetch('php/create-community_process.php', {
+        formData.append('action', 'create');
+        fetch('php/community_process.php', {
             method: "POST",
             body: formData
         }).then(response => response.json())
