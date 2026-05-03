@@ -18,37 +18,37 @@ if ($conversations && $conversations->num_rows > 0) {
         $isActive = ($active_target == $contact['uid']);
         $profilePic = !empty($contact['profile_pic']) ? $contact['profile_pic'] : 'profile_default.jpg';
 
-        ?>
-        <div onclick="switchChat(<?= $contact['uid'] ?>)"
-            class="p-4 <?= $isActive ? 'bg-secondary-container' : 'hover:bg-surface-container-high' ?> rounded-2xl relative flex items-center gap-4 cursor-pointer transition-all duration-300 group">
+        // Inside the while loop in fetch_sidebar.php
+        $lastMsg = $contact['last_message_text'];
+        $displayMsg = !empty($lastMsg)
+            ? mb_strimwidth(htmlspecialchars($lastMsg), 0, 40, "...")
+            : "Start a new conversation";
 
-            <?php if ($isActive): ?>
-                <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-10 bg-primary rounded-r-full shadow-[0_0_8px_#ac8aff]">
+        echo '
+            <div onclick="switchChat(' . $contact['uid'] . ')"
+                class="p-4 ' . ($isActive ? 'bg-secondary-container' : 'hover:bg-surface-container-high') . ' rounded-2xl relative flex items-center gap-4 cursor-pointer transition-all duration-300 group">
+                
+                ' . ($isActive ? '<div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-10 bg-primary rounded-r-full shadow-[0_0_8px_#ac8aff]"></div>' : '') . '
+
+                <div class="relative w-12 h-12 flex-shrink-0">
+                    <img class="w-12 h-12 rounded-full object-cover border border-outline-variant/20" 
+                        src="' . $profilePic . '" 
+                        onerror="this.src=\'profile_default.jpg\'" />
                 </div>
-            <?php endif; ?>
 
-            <div class="relative w-12 h-12 flex-shrink-0">
-                <img class="w-12 h-12 rounded-full object-cover border border-outline-variant/20" src="<?= $profilePic ?>"
-                    onerror="this.src='uploads/profile_default.jpg'" />
-            </div>
-
-            <div class="flex-1 min-w-0 hidden md:block">
-                <div class="flex justify-between items-baseline mb-0.5">
-                    <h3 class="font-headline font-semibold text-on-surface truncate">
-                        <?= htmlspecialchars($contact['fullname']) ?>
-                    </h3>
-                    <?php if ($contact['last_message_time']): ?>
+                <div class="flex-1 min-w-0 hidden md:block">
+                    <div class="flex justify-between items-baseline mb-0.5">
+                        <h3 class="font-headline font-semibold text-on-surface truncate">' . htmlspecialchars($contact['fullname']) . '</h3>
+                        ' . ($contact['last_message_time'] ? '
                         <span class="text-[10px] text-on-surface-variant uppercase tracking-tighter">
-                            <?= date('h:i A', strtotime($contact['last_message_time'])) ?>
-                        </span>
-                    <?php endif; ?>
+                            ' . date('h:i A', strtotime($contact['last_message_time'])) . '
+                        </span>' : '') . '
+                    </div>
+                    <p class="text-xs ' . ($isActive ? 'text-on-secondary-container' : 'text-on-surface-variant') . ' truncate">
+                        ' . $displayMsg . '
+                    </p>
                 </div>
-                <p class="text-xs text-on-surface-variant truncate">
-                    <?= $contact['last_message_time'] ? 'Latest message' : 'Start a new conversation' ?>
-                </p>
-            </div>
-        </div>
-        <?php
+            </div>';
     }
 } else {
     echo '<div class="p-6 text-center text-xs text-gray-500 italic">No connections found yet.</div>';

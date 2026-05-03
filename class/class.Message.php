@@ -54,19 +54,21 @@ class Message
 
     public function getConversationsList()
     {
-        // This query gets unique users from both friendships (accepted) AND message history
-        // It sorts them so the person with the newest message appears at the top
         $sql = "SELECT DISTINCT users.uid, users.fullname, users.profile_pic,
+            -- Get the timestamp of the latest message
             (SELECT MAX(sent_at) FROM direct_messages 
              WHERE (sender_uid = users.uid AND receiver_uid = $this->uid) 
-             OR (sender_uid = $this->uid AND receiver_uid = users.uid)) as last_message_time
+             OR (sender_uid = $this->uid AND receiver_uid = $this->uid)) as last_message_time,
+            -- Get the actual content of that latest message
+            (SELECT content FROM direct_messages 
+             WHERE (sender_uid = users.uid AND receiver_uid = $this->uid) 
+             OR (sender_uid = $this->uid AND receiver_uid = users.uid)
+             ORDER BY sent_at DESC LIMIT 1) as last_message_text
             FROM users
             WHERE users.uid IN (
-                -- People you are accepted friends with
                 SELECT CASE WHEN sender_uid = $this->uid THEN reciver_uid ELSE sender_uid END 
                 FROM friendships WHERE (sender_uid = $this->uid OR reciver_uid = $this->uid) AND status = 'accepted'
                 UNION
-                -- People you have a chat history with (even if unfriended)
                 SELECT CASE WHEN sender_uid = $this->uid THEN receiver_uid ELSE sender_uid END 
                 FROM direct_messages WHERE sender_uid = $this->uid OR receiver_uid = $this->uid
             )
