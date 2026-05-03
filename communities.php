@@ -31,16 +31,24 @@ include 'includes/sidebar.php';
 
     // 1. Function to switch communities
     window.switchCommunity = function (cid) {
+        if (!cid) return;
         currentCid = cid;
-        // Update URL without refreshing
+
+        // 1. Update URL
         const newUrl = window.location.pathname + '?target=' + cid;
         window.history.pushState({ path: newUrl }, '', newUrl);
 
-        // 2. Refresh everything
-        fetchMessages();
+        // 2. Clear current view immediately so user doesn't see old messages
+        document.getElementById('chat-box').innerHTML = '<div class="loader">Loading...</div>';
+
+        // 3. Refresh Components
         fetchHeader();
-        fetchSidebar(); // This forces the active highlight to move
-        fetchInputArea(); // Add this line!
+        fetchMessages();
+        fetchInputArea();
+        fetchSidebar();
+
+        // 4. Reset Polling to ensure no overlap
+        startLiveUpdates();
     };
 
     function fetchInputArea() {
@@ -50,19 +58,29 @@ include 'includes/sidebar.php';
         fetch(`php_community_message/fetch_input.php?target=${currentCid}`)
             .then(res => res.text())
             .then(html => {
-                inputArea.innerHTML = html;
+                // Hide input area if unauthorized
+                if (html.trim() === "") {
+                    inputArea.classList.add('hidden');
+                } else {
+                    inputArea.classList.remove('hidden');
+                    inputArea.innerHTML = html;
+                }
             });
     }
 
     // 2. Function to fetch messages
     window.fetchMessages = function () {
         const chatBox = document.getElementById('chat-box');
+        // If cid is 0, don't even try to fetch
         if (currentCid === 0 || !chatBox) return;
 
         fetch(`php_community_message/fetch_chat.php?target=${currentCid}`)
             .then(res => res.text())
             .then(html => {
-                if (chatBox.innerHTML !== html) {
+                // Only update if the PHP actually returned message HTML.
+                // If it returned an empty string (security exit), we leave the 
+                // "Not Found" or "Locked" placeholder alone.
+                if (html.trim() !== "" && chatBox.innerHTML !== html) {
                     chatBox.innerHTML = html;
                     chatBox.scrollTop = chatBox.scrollHeight;
                 }
@@ -71,12 +89,18 @@ include 'includes/sidebar.php';
 
     function fetchHeader() {
         const header = document.getElementById('chat-header');
-        if (!currentCid || !header) return;
+        if (!header) return;
 
         fetch(`php_community_message/fetch_header.php?target=${currentCid}`)
             .then(res => res.text())
             .then(html => {
-                header.innerHTML = html;
+                // If html is empty, the security guard triggered. Hide the header bar.
+                if (html.trim() === "") {
+                    header.classList.add('hidden');
+                } else {
+                    header.classList.remove('hidden');
+                    header.innerHTML = html;
+                }
             });
     }
 

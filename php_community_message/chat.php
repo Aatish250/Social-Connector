@@ -1,53 +1,60 @@
-<!-- Right Pane: Active Group Chat -->
 <section class="flex-1 bg-surface-variant flex flex-col h-full relative">
+    <?php
+    require_once "class/class.CommunityMessage.php";
+    $uid = $_SESSION['uid'];
+    $commMsgObj = new CommunityMessage($conn, $uid);
+    $cid = isset($_GET['target']) ? (int) $_GET['target'] : 0;
 
-    <!-- Chat Header -->
-    <!-- The ID 'chat-header' is targeted by fetchHeader() in communities.php -->
+    // Check if community exists
+    $exists = false;
+    if ($cid > 0) {
+        $checkSql = "SELECT cid FROM communities WHERE cid = ?";
+        $stmt = $conn->prepare($checkSql);
+        $stmt->bind_param("i", $cid);
+        $stmt->execute();
+        $exists = $stmt->get_result()->num_rows > 0;
+    }
+
+    $canAccess = ($exists && $commMsgObj->isMember($cid));
+    ?>
+
+    <!-- Header: Hidden if no access -->
     <header id="chat-header"
-        class="h-20 flex items-center px-8 bg-surface-container-low/50 backdrop-blur-md sticky top-0 z-30">
-        <?php
-        // Initial load logic: if a target is already in the URL, include the header content
-        if (isset($_GET['target']) && (int) $_GET['target'] > 0) {
-            include "php_community_message/fetch_header.php";
-        }
-        ?>
+        class="h-20 flex items-center px-8 bg-surface-container-low/50 backdrop-blur-md sticky top-0 z-30 <?= !$canAccess ? 'hidden' : '' ?>">
+        <?php if ($canAccess)
+            include "php_community_message/fetch_header.php"; ?>
     </header>
 
-    <!-- Messages Area -->
-    <!-- The ID 'chat-box' is targeted by fetchMessages() to scroll and inject bubbles -->
+    <!-- Message History -->
     <div id="chat-box" class="flex-1 overflow-y-auto p-8 flex flex-col gap-8 no-scrollbar">
         <?php
-        if (isset($_GET['target']) && (int) $_GET['target'] > 0) {
-            include "php_community_message/fetch_chat.php";
+        if ($cid === 0) {
+            // No selection placeholder
+            echo '<div class="flex flex-col items-center justify-center h-full opacity-40">
+                    <span class="material-symbols-outlined text-6xl mb-4">forum</span>
+                    <p class="font-manrope font-semibold">Select a community</p>
+                  </div>';
+        } elseif (!$exists) {
+            // THIS PREVENTS THE BLANK SCREEN for target=99
+            echo '<div class="flex flex-col items-center justify-center h-full opacity-40">
+                    <span class="material-symbols-outlined text-6xl mb-4">search_off</span>
+                    <p class="font-manrope font-semibold">Community not found</p>
+                  </div>';
+        } elseif (!$canAccess) {
+            // Membership placeholder
+            echo '<div class="flex flex-col items-center justify-center h-full opacity-40">
+                    <span class="material-symbols-outlined text-6xl mb-4">lock</span>
+                    <p class="font-manrope font-semibold">Private Community</p>
+                  </div>';
         } else {
-            // Placeholder for when no community is selected
-            echo '
-            <div class="flex flex-col items-center justify-center h-full opacity-40 text-on-surface text-center px-10">
-                <span class="material-symbols-outlined text-6xl mb-4">forum</span>
-                <p class="font-manrope font-semibold">Select a community from the sidebar to start chatting.</p>
-            </div>';
+            include "php_community_message/fetch_chat.php";
         }
         ?>
     </div>
 
-    <!-- Message Input Bar Container -->
-    <!-- The ID 'chat-input-area' allows JS to show/hide the send box dynamically -->
-    <div id="chat-input-area">
-        <?php
-        if (isset($_GET['target']) && (int) $_GET['target'] > 0) {
-            include "php_community_message/fetch_input.php";
-        }
-        ?>
+    <!-- Input Bar: Hidden if no access -->
+    <div id="chat-input-area" class="<?= !$canAccess ? 'hidden' : '' ?>">
+        <?php if ($canAccess)
+            include "php_community_message/fetch_input.php"; ?>
     </div>
-
 </section>
-
-<!-- Optional: Simple script to ensure the chat-box always starts at the bottom on hard refresh -->
-<script>
-    window.addEventListener('load', () => {
-        const chatBox = document.getElementById('chat-box');
-        if (chatBox) {
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-    });
-</script>
