@@ -4,26 +4,30 @@ require_once "config/auth.php";
 require_once "func/func_user.php";
 isLoggedIn();
 
-$uid = $_GET['user'];
+$target_uid = intval($_GET['user']);
+$my_uid = $_SESSION['uid'];
 
-$friendsResult = getFriendList($conn, $uid);
-$friendCount = mysqli_num_rows($friendsResult);
+$friendsResult = getFriendList($conn, $target_uid);
+$friendCount = ($friendsResult !== 0) ? mysqli_num_rows($friendsResult) : 0;
 $friends = [];
 if ($friendCount > 0)
     while ($row = mysqli_fetch_assoc($friendsResult))
         $friends[] = $row;
 
-$query = "SELECT * FROM communities WHERE created_by = $uid";
+$query = "SELECT * FROM communities WHERE created_by = $target_uid";
 $myCommunityResult = mysqli_query($conn, $query);
 $myCommunityCount = mysqli_num_rows($myCommunityResult);
-$myCommunity = mysqli_fetch_assoc($myCommunityResult);
 
 
 $pageTitle = 'Profile | Social Connector';
 $currentPage = 'profile';
 include 'includes/header.php';
 include 'includes/sidebar.php';
-$user = getUserDetail($conn, $uid);
+$user = getUserDetail($conn, $target_uid);
+
+$connection = getConnectionStatus($conn, $my_uid, $target_uid);
+$status = $connection ? $connection['status'] : 'none';
+$isSender = $connection && $connection['sender_uid'] == $my_uid;
 ?>
 
 <main class="ml-20 lg:ml-64 flex-grow p-12 min-h-screen bg-surface">
@@ -70,6 +74,44 @@ $user = getUserDetail($conn, $uid);
                     </div>
                 </div>
             </div>
+
+            <!-- Connection Buttons -->
+            <div class="flex gap-4 mb-2">
+                <?php if ($my_uid != $target_uid): ?>
+                    <?php if ($status === 'accepted'): ?>
+                        <button onclick="handleConnection('remove')" class="px-6 py-3 bg-error-container text-on-error-container rounded-xl font-bold text-sm shadow-lg hover:shadow-error/20 transition-all flex items-center gap-2">
+                            <span class="material-symbols-outlined text-lg">person_remove</span>
+                            Remove Connection
+                        </button>
+                    <?php elseif ($status === 'pending'): ?>
+                        <?php if ($isSender): ?>
+                            <button onclick="handleConnection('cancel')" class="px-6 py-3 bg-surface-container-highest text-on-surface rounded-xl font-bold text-sm border border-outline-variant hover:bg-error-container/10 transition-all flex items-center gap-2">
+                                <span class="material-symbols-outlined text-lg">cancel</span>
+                                Cancel Request
+                            </button>
+                        <?php else: ?>
+                            <button onclick="handleConnection('accept')" class="px-6 py-3 bg-primary text-on-primary rounded-xl font-bold text-sm shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2">
+                                <span class="material-symbols-outlined text-lg">check_circle</span>
+                                Accept
+                            </button>
+                            <button onclick="handleConnection('decline')" class="px-6 py-3 bg-surface-container-highest text-on-surface rounded-xl font-bold text-sm border border-outline-variant hover:bg-error-container/10 transition-all flex items-center gap-2">
+                                <span class="material-symbols-outlined text-lg">block</span>
+                                Decline
+                            </button>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <button onclick="handleConnection('send')" class="px-6 py-3 bg-primary text-on-primary rounded-xl font-bold text-sm shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2">
+                            <span class="material-symbols-outlined text-lg">person_add</span>
+                            Send Connection
+                        </button>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <a href="edit-profile.php" class="px-6 py-3 bg-surface-container-highest text-on-surface rounded-xl font-bold text-sm border border-outline-variant hover:bg-surface-container-high transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">edit</span>
+                        Edit Profile
+                    </a>
+                <?php endif; ?>
+            </div>
         </div>
         <!-- Stats Bento -->
         <div class="grid grid-cols-3 gap-6">
@@ -103,7 +145,7 @@ $user = getUserDetail($conn, $uid);
             <div class="flex items-center my-3">
                 <hr class="flex-grow border-t border-outline-variant/20">
                 <span class="mx-3 text-xs text-on-surface-variant font-medium uppercase tracking-widest">
-                    <?= htmlspecialchars(explode(' ', trim($user['fullname']))[0]) ?>'s' Friends <span
+                    <?= htmlspecialchars(explode(' ', trim($user['fullname']))[0]) ?>'s Friends <span
                         class="text-primary text-md font-light">( <?= $friendCount ?> )</span>
                 </span>
                 <hr class="flex-grow border-t border-outline-variant/20">
@@ -152,7 +194,7 @@ $user = getUserDetail($conn, $uid);
         <div class="flex items-center my-3">
             <hr class="flex-grow border-t border-outline-variant/20">
             <span class="mx-3 text-xs text-on-surface-variant font-medium uppercase tracking-widest">
-                <?= htmlspecialchars(explode(' ', trim($user['fullname']))[0]) ?>'s' Community <span
+                <?= htmlspecialchars(explode(' ', trim($user['fullname']))[0]) ?>'s Community <span
                     class="text-primary text-md font-light">( <?= $myCommunityCount ?> )</span>
             </span>
             <hr class="flex-grow border-t border-outline-variant/20">
@@ -194,5 +236,30 @@ $user = getUserDetail($conn, $uid);
         </div>
     </section>
 </main>
+
+<script>
+function handleConnection(action) {
+    const formData = new FormData();
+    formData.append('action', action);
+    formData.append('target_uid', '<?= $target_uid ?>');
+
+    fetch('php/connection_process.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        showToast(data.message, data.status, data.timmer);
+        if (data.status === 1) {
+            setTimeout(() => {
+                location.reload();
+            }, data.timmer * 200);
+        }
+    })
+    .catch(error => {
+        showToast("Something went wrong", 0);
+    });
+}
+</script>
 
 <?php include 'includes/footer.php'; ?>

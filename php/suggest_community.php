@@ -1,17 +1,23 @@
 <?php
-require_once "config/db.php";
-require_once "class/class.Community.php";
-require_once "class/class.JaccardSimilarity.php";
-// require_once "../config/db.php";
-// require_once "../config/auth.php";
-// require_once "../class/class.Community.php";
-// require_once "../class/class.JaccardSimilarity.php";
+// Handle paths based on whether it's included or executed directly (AJAX)
+$isAjax = !defined('INCLUDED');
+if ($isAjax) {
+    require_once "../config/db.php";
+    require_once "../config/auth.php";
+    require_once "../class/class.Community.php";
+    require_once "../class/class.JaccardSimilarity.php";
+    isLoggedIn();
+} else {
+    require_once "config/db.php";
+    require_once "class/class.Community.php";
+    require_once "class/class.JaccardSimilarity.php";
+}
+
 $uid = $_SESSION['uid'];
-
 $comm = new Community($conn, $uid);
-
 $algo = new JaccardSimilarity($conn, $uid);
 $suggestCommunitys = $algo->suggestCommunities();
+
 if (count($suggestCommunitys)):
     foreach ($suggestCommunitys as $sCid):
         $community = $comm->getCommunity($sCid);
@@ -19,20 +25,22 @@ if (count($suggestCommunitys)):
         ?>
         <!-- Card: -->
         <div
-            class="group relative bg-surface-container-low rounded-xl overflow-hidden hover:bg-surface-container-high transition-all duration-500 flex flex-col h-full">
-            <div class="h-48 overflow-hidden relative">
+            class="group relative bg-surface-container-low rounded-xl overflow-hidden hover:bg-surface-container-high transition-all duration-500 flex flex-col h-full border border-outline-variant/10">
+            <a href="view-community.php?cid=<?= $sCid ?>" class="h-48 overflow-hidden relative block">
                 <img alt="<?= htmlspecialchars($community['name']) ?>"
                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70"
                     src="<?= htmlspecialchars($community['cover_image']) ?>" />
                 <div
                     class="absolute inset-0 bg-gradient-to-t from-surface-container-low via-transparent to-transparent opacity-80 group-hover:opacity-0 transition-opacity duration-500">
                 </div>
-            </div>
+            </a>
             <div class="p-8 flex-grow flex flex-col justify-between">
                 <div>
-                    <h3 class="text-2xl font-headline font-extrabold mb-3 group-hover:text-primary transition-colors">
-                        <?= htmlspecialchars($community['name']) ?>
-                    </h3>
+                    <a href="view-community.php?cid=<?= $sCid ?>" class="block">
+                        <h3 class="text-2xl font-headline font-extrabold mb-3 group-hover:text-primary transition-colors">
+                            <?= htmlspecialchars($community['name']) ?>
+                        </h3>
+                    </a>
                 </div>
                 <p class="text-on-surface-variant text-sm leading-relaxed flex-grow">
                     <?= htmlspecialchars($community['description']) ?>
@@ -54,6 +62,7 @@ if (count($suggestCommunitys)):
                     </div>
                 </div>
                 <button
+                    onclick="joinCommunity(<?= $sCid ?>)"
                     class="w-full bg-gradient-to-r from-primary to-primary-dim py-3 rounded-lg font-headline font-bold text-on-primary-container text-sm tracking-wide transform active:scale-95 transition-all mt-auto">Join
                     Community</button>
             </div>
@@ -61,6 +70,13 @@ if (count($suggestCommunitys)):
         </div>
         <?php
     endforeach;
+else:
+    ?>
+    <div class="col-span-full py-20 text-center">
+        <span class="material-symbols-outlined text-6xl text-outline mb-4">explore_off</span>
+        <p class="text-on-surface-variant text-lg font-medium">No more communities to discover right now.</p>
+    </div>
+    <?php
 endif;
 ?>
 

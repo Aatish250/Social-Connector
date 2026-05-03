@@ -32,3 +32,13 @@ function getFriendList($conn, $uid)
         return 0;
 }
 
+function getConnectionStatus($conn, $uid, $target_uid)
+{
+    $query = "SELECT * FROM friendships WHERE (sender_uid = $uid AND reciver_uid = $target_uid) OR (sender_uid = $target_uid AND reciver_uid = $uid)";
+    $result = mysqli_query($conn, $query);
+    if ($result && $row = mysqli_fetch_assoc($result)) {
+        return $row;
+    }
+    return null;
+}
+
