@@ -2,13 +2,13 @@
 
 ## 1. Core Objective
 
-Build a minimal social web app that connects users via direct messaging and community groups. The primary goal is to demonstrate two specific algorithms: **Breadth-First Search (BFS)** for finding mutual friends and **Jaccard Collaborative Filtering** for community recommendations.
+Create a lightweight social platform that lets users connect through direct messaging and by joining community groups. The app will focus on demonstrating two main algorithms: **Breadth-First Search (BFS)** for mutual friend discovery and **Jaccard Collaborative Filtering** for making community recommendations.
 
-## 2. Minimal Tech Stack (Proposed)
+## 2. Minimal Tech Stack (Actual)
 
-- **Backend:** Node.js/Express or Python/FastAPI (Keep it lightweight)
-- **Database:** PostgreSQL or SQLite (Relational structure is best for these algorithms)
-- **Frontend:** Basic HTML/JS or a simple React/Tailwind setup
+- **Backend:** PHP (procedural and OOP with custom classes)
+- **Database:** MySQL (used via PHP's MySQLi or PDO)
+- **Frontend:** HTML with PHP templates and Tailwind CSS for styling; JavaScript for basic interactivity
 
 ## 3. Database Schema (MVP)
 
@@ -36,14 +36,14 @@ Build a minimal social web app that connects users via direct messaging and comm
 
 ## 4. Algorithmic Requirements
 
-- **BFS (Mutual Friends):** Starting from User A, traverse the `friendships` table to find users at a distance of 2 (friends of friends) who are not yet connected to User A.
-- **Jaccard Filtering (Communities):**
-  - Calculate similarity: (Communities in common) / (Total unique communities between two users).
-  - Recommend communities that "similar" users have joined.
+- **BFS (Mutual Friends):** Use the `friendships` table to find users who are two hops away (friend of a friend), excluding already connected users.
+- **Jaccard Collaborative Filtering (Communities):**
+  - For two users: Similarity = (Communities both are in) / (All unique communities either is in)
+  - Suggest communities that are popular among users most similar to the target user.
 
-## 5. Scope Constraints (Time-Saving)
+## 5. Scope Constraints
 
-- No complex auth (Simple JWT or Session).
-- Minimalist UI (Focus on functionality over aesthetics).
-- No real-time sockets unless necessary (use simple polling or page refreshes for chat if time is tight).
-- Find User/Community pages should be simple search bars with list results.
+- Simple authentication (JWT or basic session)
+- Minimalist user interface, prioritizing core features over looks
+- Avoid real-time features unless critical—chat can refresh with polling or manual reload for MVP
+- User and community search pages: simple search bars and results lists only
