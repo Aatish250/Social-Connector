@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS friendships (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY (sender_uid) REFERENCES users(uid),
-    FOREIGN KEY (reciver_id) REFERENCES users(uid)
+    FOREIGN KEY (reciver_uid) REFERENCES users(uid)
 );
 
 CREATE TABLE IF NOT EXISTS communities (
@@ -46,4 +46,26 @@ CREATE TABLE IF NOT EXISTS community_members (
     joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (uid) REFERENCES users(uid),
     FOREIGN KEY (cid) REFERENCES communities(cid) ON DELETE CASCADE
+);
+
+-- Table for direct user-to-user messages
+CREATE TABLE IF NOT EXISTS direct_messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    sender_uid INT NOT NULL,
+    receiver_uid INT NOT NULL,
+    content TEXT NOT NULL,
+    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (sender_uid) REFERENCES users(uid),
+    FOREIGN KEY (receiver_uid) REFERENCES users(uid)
+);
+
+-- Table for user-to-community (group) messages (renamed as community_messages)
+CREATE TABLE IF NOT EXISTS community_messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cid INT NOT NULL,
+    sender_uid INT NOT NULL,
+    content TEXT NOT NULL,
+    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (cid) REFERENCES communities(cid) ON DELETE CASCADE,
+    FOREIGN KEY (sender_uid) REFERENCES users(uid)
 );
