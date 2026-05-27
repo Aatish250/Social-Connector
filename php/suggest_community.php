@@ -61,20 +61,19 @@ if (count($suggestCommunitys)):
                         </span>
                     </div>
                 </div>
-                <button
-                    onclick="joinCommunity(<?= $sCid ?>)"
+                <button onclick="joinCommunity(<?= $sCid ?>)"
                     class="w-full bg-gradient-to-r from-primary to-primary-dim py-3 rounded-lg font-headline font-bold text-on-primary-container text-sm tracking-wide transform active:scale-95 transition-all mt-auto">Join
                     Community</button>
             </div>
-       
+
         </div>
         <?php
     endforeach;
 else:
     ?>
-    <div class="col-span-full py-20 text-center">
-        <span class="material-symbols-outlined text-6xl text-outline mb-4">explore_off</span>
-        <p class="text-on-surface-variant text-lg font-medium">No more communities to discover right now.</p>
+    <div class="col-span-full py-5 text-center opacity-60">
+        <span class="material-symbols-outlined text-6xl text-outline">explore_off</span>
+        <p class="text-on-surface-variant text-sm font-light">Join Other Communities to get Recommendation...</p>
     </div>
     <?php
 endif;

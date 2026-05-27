@@ -123,10 +123,8 @@ include 'includes/sidebar.php';
         </section>
         <!-- Results Sections -->
         <div class="max-w-5xl mx-auto space-y-5">
-            <!-- Pending Requests -->
-            <section id="requestSection">
-                <!-- contents to be fetch from show_request.php -->
-            </section>
+            <!-- show incoming requests -->
+            <?php include("./components/requests.php") ?>
             <!-- People You May Know -->
             <section id="suggestUsers">
 
@@ -243,83 +241,9 @@ include 'includes/sidebar.php';
 </script>
 
 <script> // load the request lists
-    const requestSection = document.getElementById("requestSection");
-    function loadRequests() {
-        // const dataForm = new FormData();
-        fetch("php/show_request.php").then(responce => responce.text())
-            .then(data => {
-                requestSection.innerHTML = data;
-                requestActionButton();
-            });
-    }
-    loadRequests();
 
-    function requestActionButton() {
-        userRequestCards = document.querySelectorAll(".userRequestCard");
-        userRequestCards.forEach(card => {
-            const cardUid = card.dataset.cardUid;
 
-            const acceptBtn = card.querySelector(".acceptBtn");
-            if (acceptBtn) {
-                const newAcceptBtn = acceptBtn.cloneNode(true);
-                acceptBtn.parentNode.replaceChild(newAcceptBtn, acceptBtn);
-                newAcceptBtn.addEventListener("click", e => {
-                    e.preventDefault();
-                    console.log("accept uid:" + cardUid);
 
-                    fetch(`php/show_request.php?action=accept&card_uid=${cardUid}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            showToast(data.message, data.status, data.timmer);
-                            loadRequests();
-                            loadSuggestion(suggestionLimit = 4);
-                        })
-                        .catch(error => showToast(error, 0));
-                    // loadRequests();
-                })
-            }
-
-            const declineBtn = card.querySelector(".declineBtn");
-            if (declineBtn) {
-                const newDeclineBtn = declineBtn.cloneNode(true);
-                declineBtn.parentNode.replaceChild(newDeclineBtn, declineBtn);
-                newDeclineBtn.addEventListener("click", e => {
-                    e.preventDefault();
-                    console.log("accept uid:" + cardUid);
-
-                    fetch(`php/show_request.php?action=decline&card_uid=${cardUid}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            showToast(data.message, data.status, data.timmer);
-                            loadRequests();
-                            loadSuggestion(suggestionLimit = 4);
-                        })
-                        .catch(error => showToast(error, 0));
-                    // loadRequests();
-                })
-            }
-
-            const cancelBtn = card.querySelector(".cancelBtn");
-            if (cancelBtn) {
-                const newCancelBrn = cancelBtn.cloneNode(true);
-                cancelBtn.parentNode.replaceChild(newCancelBrn, cancelBtn);
-                newCancelBrn.addEventListener("click", e => {
-                    e.preventDefault();
-                    console.log("cancel uid:" + cardUid);
-
-                    fetch(`php/show_request.php?action=cancel&card_uid=${cardUid}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            showToast(data.message, data.status, data.timmer);
-                            loadRequests();
-                            loadSuggestion(suggestionLimit = 4);
-                        })
-                        .catch(error => showToast(error, 0));
-                    // loadRequests();
-                })
-            }
-        });
-    }
 </script>
 
 <script> // load the suggested people section

@@ -81,11 +81,13 @@ if ($friendCount > 0) {
                 class="userRequestCard bg-surface-container-high p-3 rounded-xl flex items-center justify-between group hover:bg-surface-variant transition-all duration-300">
                 <div class="flex items-center gap-4 w-full">
                     <a href="view-profile.php?user=<?= $friendDetail['uid'] ?>" class="block group/link">
-                        <img alt="<?= $friendDetail['fullname'] ?>" class="w-20 h-20 rounded-md object-cover transition-all group-hover/link:opacity-80"
+                        <img alt="<?= $friendDetail['fullname'] ?>"
+                            class="w-20 h-20 rounded-md object-cover transition-all group-hover/link:opacity-80"
                             src="<?= $friendDetail['profile_pic'] ?>" />
                     </a>
                     <div class="flex-1 w-0 min-w-0">
-                        <a href="view-profile.php?user=<?= $friendDetail['uid'] ?>" class="font-headline font-bold text-on-surface w-full truncate sm:whitespace-normal hover:text-primary transition-colors">
+                        <a href="view-profile.php?user=<?= $friendDetail['uid'] ?>"
+                            class="font-headline font-bold text-on-surface w-full truncate sm:whitespace-normal hover:text-primary transition-colors">
                             <?= $friendDetail['fullname'] ?>
                         </a>
                         <!-- Mutuals -->
@@ -142,11 +144,13 @@ if ($friendCount > 0) {
                 class="userRequestCard bg-surface-container-high p-3 rounded-xl flex items-center justify-between group hover:bg-surface-variant transition-all duration-300">
                 <div class="flex items-center gap-4 w-full">
                     <a href="view-profile.php?user=<?= $friendDetail['uid'] ?>" class="block group/link">
-                        <img alt="<?= $friendDetail['fullname'] ?>" class="w-20 h-20 rounded-md object-cover transition-all group-hover/link:opacity-80"
+                        <img alt="<?= $friendDetail['fullname'] ?>"
+                            class="w-20 h-20 rounded-md object-cover transition-all group-hover/link:opacity-80"
                             src="<?= $friendDetail['profile_pic'] ?>" />
                     </a>
                     <div class="flex-1 w-0 min-w-0">
-                        <a href="view-profile.php?user=<?= $friendDetail['uid'] ?>" class="font-headline font-bold text-on-surface w-full truncate sm:whitespace-normal hover:text-primary transition-colors">
+                        <a href="view-profile.php?user=<?= $friendDetail['uid'] ?>"
+                            class="font-headline font-bold text-on-surface w-full truncate sm:whitespace-normal hover:text-primary transition-colors">
                             <?= $friendDetail['fullname'] ?>
                         </a>
                         <!-- Mutuals -->

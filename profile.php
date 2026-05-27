@@ -32,7 +32,7 @@ $followingCommunityResult = mysqli_query($conn, $followingCommunityQuery);
 
 $followingCommunityCount = 0;
 if ($followingCommunityResult && $row = mysqli_fetch_assoc($followingCommunityResult)) {
-    $followingCommunityCount = (int)$row['following_count'];
+    $followingCommunityCount = (int) $row['following_count'];
 }
 
 
@@ -113,6 +113,8 @@ include 'includes/sidebar.php';
             </div>
         </div>
     </section>
+    <!-- Request section -->
+    <?php include("./components/requests.php") ?>
     <!-- Friends List Section -->
     <?php if ($friendCount > 0): ?>
         <section class="mt-16 max-w-6xl mx-auto">

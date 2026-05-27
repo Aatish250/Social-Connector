@@ -46,12 +46,12 @@ $currentPage = isset($currentPage) ? $currentPage : '';
             <a class="flex items-center justify-center lg:justify-start gap-0 lg:gap-4 <?php echo $currentPage == 'communities' ? 'text-[#ac8aff]' : 'text-[#aba9bd] hover:text-[#e6e3f8]'; ?> transition-colors duration-300 font-headline font-semibold tracking-wide text-sm"
                 href="communities.php">
                 <span class="material-symbols-outlined text-2xl lg:text-base">group</span>
-                <span class="hidden lg:inline ml-0 lg:ml-1">Communities</span>
+                <span class="hidden lg:inline ml-0 lg:ml-1">Communities Chat</span>
             </a>
             <a class="flex items-center justify-center lg:justify-start gap-0 lg:gap-4 <?php echo $currentPage == 'discover' ? 'text-[#ac8aff]' : 'text-[#aba9bd] hover:text-[#e6e3f8]'; ?> transition-colors duration-300 font-headline font-semibold tracking-wide text-sm"
                 href="discover.php">
                 <span class="material-symbols-outlined text-2xl lg:text-base">explore</span>
-                <span class="hidden lg:inline ml-0 lg:ml-1">Discover</span>
+                <span class="hidden lg:inline ml-0 lg:ml-1">Discover Community</span>
             </a>
             <a class="flex items-center justify-center lg:justify-start gap-0 lg:gap-4 <?php echo $currentPage == 'find-users' ? 'text-[#ac8aff]' : 'text-[#aba9bd] hover:text-[#e6e3f8]'; ?> transition-colors duration-300 font-headline font-semibold tracking-wide text-sm"
                 href="find-users.php">

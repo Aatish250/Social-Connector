@@ -1,4 +1,6 @@
 <?php
+
+require_once __DIR__ . "/class.JaccardSimilarity.php";
 class Community
 {
     private $conn;
@@ -46,6 +48,73 @@ class Community
             return $row;
         }
         return null;
+    }
+
+    private function getMyCommunitiesIds()
+    {
+        $uid = $this->uid;
+        $myCids = [];
+
+        $query = "SELECT * FROM communities WHERE created_by = '$uid'";
+        $result = mysqli_query($this->conn, $query);
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            $myCids[] = $row['cid'];
+        }
+        return $myCids;
+    }
+
+    // --- ACTION: SUGGEST COMMUNITIES NOT INTERSECTING WITH RECOMMENDED ---
+    // Provide communities that do not overlap with the recommended from suggestCommunities
+    public function getCommunitiesNotInSuggestions($limit = 4)
+    {
+
+        $algo = new JaccardSimilarity($this->conn, $this->uid);
+        // Get the IDs from suggestCommunities (recommended)
+        $JCsuggested = $algo->suggestCommunities($limit);
+
+        $suggestedIds = [];
+
+        foreach ($JCsuggested as $cid) {
+            $suggestedIds[] = intval($cid);
+        }
+
+        foreach ($this->getMyCommunitiesIds() as $myCids) {
+            $suggestedIds[] = intval($myCids);
+        }
+
+        // Make a comma-separated list for SQL query, or "NULL" for empty array
+        $excludeList = !empty($suggestedIds) ? implode(',', $suggestedIds) : NULL;
+
+        $uid = mysqli_real_escape_string($this->conn, $this->uid);
+        $limit = intval($limit);
+
+        // 1. Create your base query string
+        $query = "SELECT * FROM communities";
+
+        // 2. Conditionally append the WHERE clause if the array isn't empty
+        if (!empty($suggestedIds)) {
+            // Sanitize the array values to protect against SQL Injection
+            $sanitizedIds = array_map('intval', $suggestedIds);
+            $excludeList = implode(',', $sanitizedIds);
+
+            $query .= " WHERE cid NOT IN ($excludeList)";
+        }
+
+        // 3. Append the limit at the very end
+        $query .= " LIMIT $limit";
+
+        $result = mysqli_query($this->conn, $query);
+        $communities = [];
+        if ($result) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $communities[] = $row['cid'];
+            }
+        }
+        // Shuffle the communities before returning
+        shuffle($communities);
+        return $communities;
+
     }
 
     // --- ACTION: UPDATE A COMMUNITY ---
