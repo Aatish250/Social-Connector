@@ -28,6 +28,8 @@ include 'includes/sidebar.php';
 <script>
     // Global variable for current target
     let currentTargetUid = <?= isset($_GET['target']) ? (int) $_GET['target'] : 0 ?>;
+    let messageInterval = null;
+    let sidebarInterval = null;
 
     // 1. Function to Refresh the Chat Header (Name & Photo)
     window.fetchHeader = function () {
@@ -86,22 +88,32 @@ include 'includes/sidebar.php';
         fetch(`php_message/fetch_chat.php?target=${currentTargetUid}`)
             .then(res => res.text())
             .then(html => {
-                // CRITICAL: Only overwrite if we have actual messages.
-                // This prevents overwriting "User Not Found" with a blank screen.
-                if (html.trim() !== "") {
-                    if (chatBox.innerHTML !== html) {
-                        chatBox.innerHTML = html;
-                        chatBox.scrollTop = chatBox.scrollHeight;
-                    }
+                // Remove the strict trim check to allow clearing loader for new chats
+                if (chatBox.innerHTML !== html) {
+                    chatBox.innerHTML = html;
+                    chatBox.scrollTop = chatBox.scrollHeight;
                 }
             });
     };
 
+    // Start/Restart Polling
+    function startPolling() {
+        // Clear existing intervals if any
+        if (messageInterval) clearInterval(messageInterval);
+        if (sidebarInterval) clearInterval(sidebarInterval);
+
+        if (currentTargetUid > 0) {
+            messageInterval = setInterval(fetchMessages, 2000); // 2 seconds for messages
+            sidebarInterval = setInterval(fetchSidebar, 2000); // 30 seconds for sidebar
+        }
+    }
+
     // 5. The Switch Function
     window.switchChat = function (newUid) {
+        if (currentTargetUid === newUid) return; // Don't reload if same target
         currentTargetUid = newUid;
 
-        // Optional: Show a quick loader while switching
+        // Show a quick loader while switching
         document.getElementById('chat-box').innerHTML = '<div class="opacity-20 p-10 text-center">Loading...</div>';
 
         const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?target=' + newUid;
@@ -111,6 +123,9 @@ include 'includes/sidebar.php';
         fetchMessages();
         fetchSidebar();
         fetchInputArea();
+
+        // Restart polling with new target
+        startPolling();
     };
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -119,10 +134,7 @@ include 'includes/sidebar.php';
             fetchHeader();
             fetchMessages();
             fetchInputArea();
-
-            // Polling
-            setInterval(fetchMessages, 3000); // Fast for messages
-            setInterval(fetchSidebar, 60000); // 1 minute for sidebar
+            startPolling();
         }
 
         // Handle sending

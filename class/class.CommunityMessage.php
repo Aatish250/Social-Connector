@@ -65,4 +65,17 @@ class CommunityMessage
         $stmt->execute();
         return $stmt->get_result();
     }
+
+    /**
+     * Save a new community message
+     */
+    public function sendGroupMessage($cid, $content)
+    {
+        if (!$this->isMember($cid)) return false;
+        
+        $sql = "INSERT INTO community_messages (cid, sender_uid, content) VALUES (?, ?, ?)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("iis", $cid, $this->uid, $content);
+        return $stmt->execute();
+    }
 }

@@ -58,7 +58,7 @@ class Message
             -- Get the timestamp of the latest message
             (SELECT MAX(sent_at) FROM direct_messages 
              WHERE (sender_uid = users.uid AND receiver_uid = $this->uid) 
-             OR (sender_uid = $this->uid AND receiver_uid = $this->uid)) as last_message_time,
+             OR (sender_uid = $this->uid AND receiver_uid = users.uid)) as last_message_time,
             -- Get the actual content of that latest message
             (SELECT content FROM direct_messages 
              WHERE (sender_uid = users.uid AND receiver_uid = $this->uid) 
