@@ -1,8 +1,8 @@
 <?php
-require_once "../config/db.php";
-require_once "../config/auth.php";
-require_once "../class/class.Message.php";
-require_once "../func/func_user.php";
+require_once __DIR__ . "/../config/db.php";
+require_once __DIR__ . "/../config/auth.php";
+require_once __DIR__ . "/../class/class.Message.php";
+require_once __DIR__ . "/../func/func_user.php";
 
 $uid = $_SESSION['uid'];
 $target_uid = isset($_GET['target']) ? (int) $_GET['target'] : 0;
