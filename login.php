@@ -1,6 +1,12 @@
 <?php
+require_once "config/db.php";
+require_once "config/auth.php";
+
+ifLoggedInGoProfile();
+
 $pageTitle = 'Login | Social Connector';
 $bodyClass = 'bg-background text-on-surface font-body min-h-screen flex items-center justify-center selection:bg-primary-container selection:text-on-primary-container';
+
 include 'includes/header.php';
 ?>
 
@@ -8,9 +14,11 @@ include 'includes/header.php';
     <!-- Branding Section -->
     <div class="flex flex-col items-center mb-10">
         <div class="mb-4">
-            <div class="w-16 h-16 signature-gradient rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
+            <div
+                class="w-16 h-16 signature-gradient rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
                 <span class="material-symbols-outlined text-on-primary-container text-4xl">hub</span>
             </div>
+
         </div>
         <h1 class="font-headline text-4xl font-black tracking-tighter text-on-surface mb-2">
             Social Connector
@@ -24,47 +32,66 @@ include 'includes/header.php';
         <form class="space-y-6" id="dataForm">
             <!-- Email Input Group -->
             <div class="space-y-2">
-                <label class="font-label text-xs font-semibold uppercase tracking-widest text-on-secondary-container" for="email">
+                <label class="font-label text-xs font-semibold uppercase tracking-widest text-on-secondary-container"
+                    for="email">
                 </label>
                 <div class="relative group">
-                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-on-surface-variant group-focus-within:text-primary transition-colors duration-300">
+                    <div
+                        class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-on-surface-variant group-focus-within:text-primary transition-colors duration-300">
                         <span class="material-symbols-outlined text-xl">alternate_email</span>
                     </div>
-                    <input class="block w-full pl-11 pr-4 py-3 bg-surface-container-low border border-outline-variant/20 rounded-lg text-on-surface placeholder:text-on-secondary-fixed-variant/50 focus:ring-1 focus:ring-primary focus:border-primary transition-all duration-300 outline-none" id="email" name="email" placeholder="name@example.com" required="" type="email"/>
+                    <input
+                        class="block w-full pl-11 pr-4 py-3 bg-surface-container-low border border-outline-variant/20 rounded-lg text-on-surface placeholder:text-on-secondary-fixed-variant/50 focus:ring-1 focus:ring-primary focus:border-primary transition-all duration-300 outline-none"
+                        id="email" name="email" placeholder="name@example.com" required="" type="email" />
                 </div>
             </div>
             <!-- Password Input Group -->
             <div class="space-y-2">
                 <div class="flex justify-between items-center">
-                    <label class="font-label text-xs font-semibold uppercase tracking-widest text-on-secondary-container" for="password">
+                    <label
+                        class="font-label text-xs font-semibold uppercase tracking-widest text-on-secondary-container"
+                        for="password">
                         Password
                     </label>
-                    <a class="text-xs font-medium text-primary hover:text-primary-fixed transition-colors duration-200" href="#">
-                        Forgot?
-                    </a>
                 </div>
                 <div class="relative group">
-                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-on-surface-variant group-focus-within:text-primary transition-colors duration-300">
+                    <div
+                        class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-on-surface-variant group-focus-within:text-primary transition-colors duration-300">
                         <span class="material-symbols-outlined text-xl">lock</span>
                     </div>
-                    <input class="block w-full pl-11 pr-4 py-3 bg-surface-container-low border border-outline-variant/20 rounded-lg text-on-surface placeholder:text-on-secondary-fixed-variant/50 focus:ring-1 focus:ring-primary focus:border-primary transition-all duration-300 outline-none" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+                    <input
+                        class="block w-full pl-11 pr-4 py-3 bg-surface-container-low border border-outline-variant/20 rounded-lg text-on-surface placeholder:text-on-secondary-fixed-variant/50 focus:ring-1 focus:ring-primary focus:border-primary transition-all duration-300 outline-none"
+                        id="password" name="password" placeholder="••••••••" required="" type="password" />
+                    <!-- Eye/Eye-off toggle button -->
+                    <button type="button" id="togglePasswordVisibility"
+                        class="absolute inset-y-0 right-3 flex items-center px-2 focus:outline-none" tabindex="-1"
+                        aria-label="Show or Hide Password">
+                        <span class="material-symbols-outlined text-xl" id="eyeIcon">visibility_off</span>
+                    </button>
                 </div>
             </div>
             <!-- Login Button -->
-            <button class="w-full primary-gradient text-on-primary-container font-headline font-bold py-3.5 rounded-lg active:scale-95 transition-all duration-200 shadow-lg shadow-primary/10" type="submit">
+            <button
+                class="w-full primary-gradient text-on-primary-container font-headline font-bold py-3.5 rounded-lg active:scale-95 transition-all duration-200 shadow-lg shadow-primary/10"
+                type="submit">
                 Login
             </button>
         </form>
         <p class="mt-8 text-center text-on-surface-variant text-sm">
-            Don't have an account? 
-            <a class="font-semibold text-primary hover:underline underline-offset-4 decoration-2 decoration-primary/30 transition-all duration-200 ml-1" href="signup.php">
+            Don't have an account?
+            <a class="font-semibold text-primary hover:underline underline-offset-4 decoration-2 decoration-primary/30 transition-all duration-200 ml-1"
+                href="signup.php">
                 Sign up
             </a>
         </p>
     </div>
     <!-- Aesthetic Background Element (Subtle Glow) -->
-    <div class="fixed top-0 right-0 -z-10 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full pointer-events-none"></div>
-    <div class="fixed bottom-0 left-0 -z-10 w-[400px] h-[400px] bg-tertiary/5 blur-[100px] rounded-full pointer-events-none"></div>
+    <div
+        class="fixed top-0 right-0 -z-10 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full pointer-events-none">
+    </div>
+    <div
+        class="fixed bottom-0 left-0 -z-10 w-[400px] h-[400px] bg-tertiary/5 blur-[100px] rounded-full pointer-events-none">
+    </div>
 </main>
 
 <?php include 'includes/footer.php'; ?>
@@ -80,7 +107,23 @@ include 'includes/header.php';
         const password = myForm.querySelector('input[name="password"]').value;
 
         log_user_in(email, password);
-        
+
         // console.log(email, password);
+    });
+
+    // Eye / Eye-off toggle logic
+    const passwordInput = document.getElementById('password');
+    const togglePasswordButton = document.getElementById('togglePasswordVisibility');
+    const eyeIcon = document.getElementById('eyeIcon');
+
+    togglePasswordButton.addEventListener('click', function () {
+        // Toggle the input type
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.textContent = 'visibility';
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.textContent = 'visibility_off';
+        }
     });
 </script>

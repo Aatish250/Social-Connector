@@ -23,3 +23,12 @@ function isLoggedIn()
     }
 }
 
+function ifLoggedInGoProfile()
+{
+    // If already logged in, redirect to profile
+    if (isset($_SESSION['uid']) && !empty($_SESSION['uid'])) {
+        header("Location: profile.php");
+        exit();
+    }
+}
+

@@ -1,4 +1,9 @@
 <?php
+require_once "config/db.php";
+require_once "config/auth.php";
+
+ifLoggedInGoProfile();
+
 $pageTitle = 'Sign Up | Social Connector';
 $bodyClass = 'flex min-h-screen items-center justify-center p-6';
 include 'includes/header.php';
